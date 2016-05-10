@@ -34,6 +34,8 @@ Python的第三方包数量庞大，质量参差不齐。我仅抽取了部分�
 - `request`
 - `beautiful_soup`
 - `matplotlib`
+- `numpy`
+- `mysql-connector-python`
 
  **本文档仅用于个人学习目的，未经许可不得用于商业目的，转载请注明出处**
 
