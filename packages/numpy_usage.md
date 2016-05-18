@@ -13,7 +13,7 @@
 >- `numpy.ndarray`与`Standard Python Library`的`array.array`不同，二者并不是同一个类
 >- `ndarray`的维度可以为0，此时为标量；若维度为1维则为向量；若维度为2维则为矩阵....
 
-## 一、 `ndarray`
+## 一、 ndarray
 
 `ndarray`比较重要的属性有：
 
@@ -34,7 +34,7 @@
 
   ![ndarray基本属性](./imgs/numpy/ndarray_attribute.JPG) 
 
-### 1. 创建`ndarray`
+### 1. 创建 ndarray 
 
 创建`ndarray`对象有很多方法：
 
@@ -111,7 +111,7 @@
 
   ![array_from_data](./imgs/numpy/ndarray_from_range.JPG) 
 
-### 2. 打印`ndarray`
+### 2. 打印 ndarray 
 
 当打印`ndarray`时，`numpy`按照Python的嵌套`list`的格式打印输出，但是按照以下顺序打印：
 
@@ -124,7 +124,7 @@
 如果`ndarray`太大，那么`numpy`默认跳过中间部分的数据而只是输出四个角落的数据。
 >要想任何时候都打印全部数据，可以在`print(array)`之前设置选项`numpy.set_printoptions(threshold='nan')`。这样后续的打印`ndarray`就不会省略中间数据。
 
-### 3. `ndarray`算术运算和比较运算
+### 3.  ndarray 算术运算和比较运算
 
 `ndarray`的算术运算、比较操作都是元素级的操作并且产生一个`ndarray`对象作为结果。`ndarray`的算术运算符`+, -, *, /, //, %, divmod(), ** or pow(), <<, >>, &, ^, |, ~`以及比较运算符`==, <, >, <=, >=, !=`等价于相应的`numpy`中的`universal function`。 
 
@@ -171,7 +171,7 @@
 
   ![ndarray索引、切片、迭代](./imgs/numpy/index_slice.JPG)
 
-### 7. `ndarray`的变形
+### 7. ndarray 的变形
 
 `ndarray`的形状由`ndarray.shape`属性给出，它是一个元组，指出每个轴上的元素个数。你可以通过以下函数改变一个`ndarray`的形状：
 
@@ -185,7 +185,7 @@
 
   ![ndarray变形](./imgs/numpy/reshape.JPG)
 
-### 8. `ndarray`的拼接
+### 8. ndarray 的拼接
 
 有几种办法将`ndarray`拼接起来：
 
@@ -196,7 +196,7 @@
 
   ![ndarray拼接](./imgs/numpy/concatenate.JPG)
 
-### 9. `ndarray`的拆分
+### 9.  ndarray 的拆分
 
 有几种办法将`ndarray`拆分：
 
@@ -212,7 +212,7 @@
 
   ![ndarray拆分](./imgs/numpy/split.JPG)
 
-### 10. `ndarray`的拷贝和视图
+### 10. ndarray 的拷贝和视图
 
 当处理`ndarray`时，它的基础数据有时被拷贝，但有时并不被拷贝。有三种情况。
 
@@ -293,7 +293,7 @@
 
   ![布尔数组分片](./imgs/numpy/bool_index_slice.JPG)
 
-### 11. `ix_()`
+### 11.  ix_() 
 
 `ix_()`函数能够排列组一组向量中的值，从而获取所有排列组合的结果。它接受`N`个一维数组，返回一个`N`元素的元组，其中元组的第`k`个元素都是一个这样的`N`维数组`ndarray`：该`ndarray`第`k`维长度等于参数列表第`k`个参数向量长度，第`k`维的值就是参数列表第`k`个参数向量的值，除了第`k`维之外所有其他维度的长度为1。
 > 它的作用就是重排每一个向量，使得重排后每一个数组变成`N`维，然后这些数组依次占领第0维，第1维....第`N-1`维，从而使得广播法则能够起作用。
@@ -395,18 +395,334 @@
 
   ![svd](./imgs/numpy/svd_function.JPG)
 
+## 三、随机与分布函数
 
-## 三、概率与分布函数
+`numpy`中的随机和分布函数模块有两种用法：函数式以及类式
 
+### 1. 函数式
 
-## 四、技巧
+#### a. 随机数
+
+- `numpy.random.rand(d0, d1, ..., dn)`:指定形状`(d0, d1, ..., dn)`创建一个随机的`ndarray`。每个元素值来自于半闭半开区间`[0,1)`并且服从均匀分布。
+	- 要求`d0, d1, ..., dn`为整数
+	- 如果未提供参数，则返回一个随机的浮点数而不是`ndarray`，
+	  浮点数值来自于半闭半开区间`[0,1)`并且服从均匀分布。
+- `numpy.random.randn(d0, d1, ..., dn)`：指定形状`(d0, d1, ..., dn)`创建一个随机的`ndarray`。每个元素值服从正态分布，其中正态分布的期望为0，方差为1
+	- 要求`d0, d1, ..., dn`为整数或者可以转换为整数
+	- 如果`di`为浮点数，则截断成整数
+	- 如果未提供参数，则返回一个随机的浮点数而不是`ndarray`，
+	  浮点数值服从正态分布，其中正态分布的期望为0，方差为1
+- `numpy.random.randint(low[, high, size])`：返回一个随机的整数`ndarray`或者一个随机的整数值。
+	- 如果`high`为`None`，则表示整数值都取自`[0,low)`且服从`discrete uniform`分布
+	- 如果`high`给出了值，则表示整数值都取自`[low,high)`且服从`discrete uniform`分布
+	- `size`是一个整数的元组，指定了输出的`ndarray`的形状。如果为`None`则表示输出为单个整数值
+- `numpy.random.random_integers(low[, high, size])`：返回一个随机的整数`ndarray`或者一个随机的整数值。
+	- 如果`high`为`None`，则表示整数值都取自`[1,low]`且服从`discrete uniform`分布
+	- 如果`high`给出了值，则表示整数值都取自`[low,high]`且服从`discrete uniform`分布
+	- `size`是一个整数的元组，指定了输出的`ndarray`的形状。如果为`None`则表示输出为单个整数值	
+	> 它与`randint`区别在于`randint`是半闭半开区间，而`random_integers`是全闭区间
+- `numpy.random.random_sample([size])`：返回一个随机的浮点`ndarray`或者一个随机的浮点值，浮点值是`[0.0,1.0)`之间均匀分布的随机数
+	- `size`为整数元组或者整数，指定结果`ndarray`的形状。如果为`None`则只输出单个浮点数
+	-  如果想生成`[a,b)`之间均匀分布的浮点数，那么你可以用`(b-a)*random_sample()+a`
+	> 如果`size`有效，它的效果等于`numpy.random.rand(*size)`；
+	> 如果`size`无效，它的效果等于`numpy.random.rand()`
+
+  ![random_sample_int_float](./imgs/numpy/random_sample_int_float.JPG)
+
+- `numpy.random.random([size])`：等价于`numpy.random.random_sample([size])`
+- `numpy.random.ranf([size])`：等价于`numpy.random.random_sample([size])`
+- `numpy.random.sample([size])`：等价于`numpy.random.random_sample([size])`
+
+  ![random_sample_alias](./imgs/numpy/random_sample_alias.JPG)
+
+- `numpy.random.choice(a[, size, replace, p])`:从一维数组中采样产生一组随机数或者一个随机数
+	- `a`为一位数组或者`int`，如果是`int`则采样数据由`numpy.arange(n)`提供，否则采用数据由`a`提供
+	- `size`为整数元组或者整数，指定结果`ndarray`的形状。如果为`None`则只输单个值
+	- `replace`：如果为`True`则采样不替换
+	- `p`：为一维数组，用于指定采样数组中每个元素值的采样概率。如果为`None`则均匀采样。
+	- 如果参数有问题则抛出异常：比如`a`为整数但是小于0，比如`p`不满足概率和为`1`，等等。。
+
+  ![random_choice](./imgs/numpy/random_choice.JPG)
+
+- `numpy.random.bytes(length)`：返回`length`长度的随机字节串。`length`指定字节长度。
+
+  ![random_bytes](./imgs/numpy/random_bytes.JPG)
+
+#### b. 排列组合
+
+- `numpy.random.shuffle(x)`:原地随机混洗`x`的内容，返回`None`。`x`为`array-like`对象，原地修改它
+- `numpy.random.permutation(x)`：随机重排`x`，返回重排后的`ndarray`。`x`为`array-like`对象，不会修改它
+	- 如果`x`是个整数，则重排`numpy.arange(x)`
+	- 如果`x`是个数组，则拷贝它然后对拷贝进行混洗
+		- 如果`x`是个多维数则只是混洗它的第0维
+
+  ![random_permutation](./imgs/numpy/random_permutation.JPG)
+
+#### c. 概率分布函数
+
+下面是共同参数：`size`若非`None`，则它指定输出`ndarray`的形状。如果为`None`，则输出单个值。
+
+- `numpy.random.beta(a, b[, size])`：Beta分布。其中`a,b`都是Beta分布的参数，要求非负浮点数。
+	- 贝塔分布为：
+\\(f(x;\alpha,\beta)=\frac {1}{B(\alpha,\beta)} x^{\alpha-1}(1-x)^{\beta-1} \\)，其中：
+  \\( B(\alpha,\beta)=\int_0^{1} t^{\alpha-1}(1-t)^{\beta-1}\,dt \\)
+
+- `numpy.random.binomial(n, p[, size])`:二项分布。其中`n,p`都是二项分布的参数，要求`n`为大于等于0的浮点数，如果它为浮点数则截断为整数；`p`为`[0,1]`之间的浮点数。
+	- 二项分布为：\\( P(N)=\binom{n}{N}p^{N}(1-p)^{n-N}\\)
+
+- `numpy.random.chisquare(df[, size])`:卡方分布。其中`df`为整数，是卡方分布的自由度（若小于等于0则抛出异常）。
+	- 卡方分布为： \\( p(x)=\frac{(1/2)^{k/2}}{\Gamma(k/2)} x^{k/2-1}e^{-x/2}\\)，其中
+	\\( \Gamma(x)=\int^{\infty}_0 t^{x-1}e^{-t}\,dt\\)
+
+- `numpy.random.dirichlet(alpha[, size])`:狄利克雷分布。其中`alpha`是个数组，为狄利克雷分布的参数。
+
+- `numpy.random.exponential([scale, size])`:指数分布。`scale`为浮点数，是参数 \\( \beta \\)
+	- 指数分布的概率密度函数为:\\( f(x;\frac {1}{\beta})=\frac{1}{\beta}\exp(-\frac{x}{\beta})\\)
+
+- `numpy.random.f(dfnum, dfden[, size]) `:`F`分布。`dfnum`为浮点数，应该大于0，是分子的自由度；
+  `dfden`是浮点数，应该大于0，是分母的自由度。
+
+- `numpy.random.gamma(shape[, scale, size])`:伽玛分布。其中`shape`是个大于0的标量，表示分布的形状；`scale`是个大于0的标量，表示伽玛分布的`scale`（默认为1）。
+	- 伽玛分布的概率密度函数为:\\(p(x)=x^{k-1} \frac {e^{-x/\theta}}{\theta^{k}\Gamma(k)}\\)，其中`k`为形状， \\(\theta\\) 为`scale`
+
+- `numpy.random.geometric(p[, size])`:几何分布。其中`p`是单次试验成功的概率。
+	- 几何分布为：\\(f(k)=(1-p)^{k-1}p\\)
+
+- `numpy.random.gumbel([loc, scale, size])`:甘贝尔分布。其中`loc`为浮点数，是分布的`location of mode`，`scale`是浮点数，为`scale`。
+	- 甘贝尔分布:\\( p(x)=\frac {e^{-(x-\mu)/\beta}}{\beta}  e^{-e-(x-\mu)/\beta}\\)，其中 \\( \mu\\) 为`location of mode`， \\(\beta \\) 为`scale`
+
+- `numpy.random.hypergeometric(ngood, nbad, nsample[, size]) `: 超几何分布。其中`ngood`为整数或者`array_like`，必须非负数，为好的选择；`nbad`为整数或者`array_like`，必须非负数，表示坏的选择。
+	- 超级几何分布：\\( P(x)= \frac {\binom{m}{n} \binom{N-m}{n-x}} {\binom{N}{n}}, 0 \le x \le m \ \text{and} \ n+m-N \le x \le n \\)，其中`n=ngood`，`m=nbad`，`N`为样本数量。`P(x)`为`x`成功的概率
+
+- `numpy.random.laplace([loc, scale, size]) `:拉普拉斯分布。`loc`为浮点数，`scale`为浮点数
+	- 拉普拉斯分布：\\(f(x;\mu,\lambda)=\frac {1}{2\lambda} \exp(- \frac{\|x-\mu\|}{\lambda}) \\)，其中 `loc`=\\(\mu \\) ， `scale`=\\( \lambda \\)
+
+- `numpy.random.logistic([loc, scale, size])`:逻辑斯谛分布。其中`loc`为浮点数，`scale`为大于0的浮点数
+	- 逻辑斯谛分布： \\(P(x)= \frac {e^{-(x-\mu)/s}}{s(1+e^{-(x-\mu)/s})^{2}}\\)， 其中 `loc`=\\( \mu \\),  `scale`= \\( s\\)
+
+- `numpy.random.lognormal([mean, sigma, size])`:对数正态分布。其中`mean`为浮点数，`sigma`为大于0的浮点数。
+	- 对数正态分布：\\( p(x)=\frac {1}{\sigma x \sqrt{2\pi}} e^{-(\ln(x)-\mu)^{2}/(2\sigma^{2})}\\)，其中`mean`=\\(\mu\\) ， `sigma`= \\( \sigma\\)
+
+- `numpy.random.logseries(p[, size])`:对数分布，其中`p`为`[0.0--1.0]`之间的浮点数。
+	- 对数分布：\\(P(k)=\frac {-p^{k}}{k\ln(1-p)} \\)
+
+- `numpy.random.multinomial(n, pvals[, size])`:多项式分布。`n`为执行二项分布的试验次数，`pvals`为浮点序列，要求这些序列的和为1，其长度为`n`。
+
+- `numpy.random.multivariate_normal(mean, cov[, size]) `:多元正态分布。`mean`为一维数组，长度为`N`；`cov`为二维数组，形状为`(N,N)`
+
+- `numpy.random.negative_binomial(n, p[, size]) `:负二项分布。`n`为整数，大于0；`p`为`[0.0--1.0]`之间的浮点数。
+	- 负二项分布：\\( P(N;n,p)=\binom{N+n-1}{n-1}p^{n}(1-p)^{N} \\)
+
+- `numpy.random.noncentral_chisquare(df, nonc[, size]) `:非中心卡方分布。`df`为整数，必须大于0;`noc`为大于0的浮点数。
+	-  非中心卡方分布： \\( P(x;k,\lambda)= \sum_{i=0}^{\infty } f_Y(x) \frac  {e^{-\lambda/2}(-\lambda/2)^{i}}{i!} \\) 
+ 
+	其中 \\( Y=Y_{k+2i} \\)为卡方分布，	`df`为`k`，`nonc`为 \\( \lambda\\)
+
+- `numpy.random.noncentral_f(dfnum, dfden, nonc[, size]) `:非中心`F`分布。其中`dfnum`为大于1的整数，`dfden`为大于1的整数，`nonc`为大于等于0的浮点数。
+
+- `numpy.random.normal([loc, scale, size]) `:正态分布。其中`loc`为浮点数，`scale`为浮点数。
+	- 正态分布： \\(p(x)=\frac {1}{\sqrt{2\pi\sigma^{2}}}e^{-(x-\mu)^{2}/(2\sigma^{2})} \\)，其中`loc`=\\( \mu \\)， `scale`=\\( \sigma \\)
+
+- `numpy.random.pareto(a[, size]) `:帕累托分布。其中`a`为浮点数。
+	- 帕累托分布： \\( p(x)= \frac {\alpha m ^{\alpha}}{x^{\alpha+1}}\\)，其中`a`=\\( \alpha \\), `m`为`scale`
+
+- `numpy.random.poisson([lam, size]) `:泊松分布。其中`lam`为浮点数或者一个浮点序列（浮点数大于等于0）。
+	- 泊松分布： \\( f(k;\lambda)=\frac {\lambda^{k}e^{-\lambda}}{k!}\\)，其中`lam`=\\(\lambda\\)
+
+- `numpy.random.power(a[, size]) `:幂级数分布。其中`a`为大于0的浮点数。
+	- 幂级数分布： \\( P(x;a)=ax^{a-1},0\le x \le 1,a \gt 0 \\)
+
+- `numpy.random.rayleigh([scale, size])`: 瑞利分布。其中`scale`为大于0的浮点数。
+	- 瑞利分布：\\( P(x;\sigma)=\frac{x}{\sigma^{2}}e^{-x^{2}/(2\sigma^{2})}\\)，其中`scale`=\\( \sigma \\)
+
+- `numpy.random.standard_cauchy([size]) `:标准柯西分布。
+	- 柯西分布：\\( P(x;x_0,\gamma)=\frac{1}{\pi\gamma[1+((x-x_0)/\gamma)^{2}]}\\)，其中标准柯西分布中， \\( x_0=1,\gamma=1\\)
+
+- `numpy.random.standard_exponential([size]) `:标准指数分布。其中`scale`等于1
+- `numpy.random.standard_gamma(shape[, size]) `:标准伽玛分布，其中`scale`等于1
+- `numpy.random.standard_normal([size]) `:标准正态分布，其中`mean`=0，`stdev`等于1
+
+- `numpy.random.standard_t(df[, size])`:学生分布。其中`df`是大于0的整数。
+	- 学生分布: \\( f(t;\nu)=\frac{\Gamma((\nu+1)/2)}{\sqrt{\nu\pi}\Gamma(\nu/2)}(1+t^{2}/\nu)^{-(\nu+1)/2}\\)， 其中 `df`= \\( \nu \\)
+
+- `numpy.random.triangular(left, mode, right[, size]) `: 三角分布。其中`left`为标量，`mode`为标量，`right`为标量
+	- 三角分布（其中`left`=`l`，`mode`=`m`，`right`=`r`）：
+
+$$ P(x;l,m,r)= \left\\{
+\begin{matrix}
+\frac{2(x-l)}{(r-l)(m-l)}, & \text{for $l \le x \le m$} \\\
+\frac{2(r-x)}{(r-l)(r-m)}, & \text{for $m \le x \le r$} \\\
+0, & \text{otherwise}
+\end{matrix}
+\right.$$
+
+- `numpy.random.uniform([low, high, size]) `:均匀分布。其中`low`为浮点数；`high`为浮点数。
+	- 均匀分布：\\(  p(x)=\frac {1}{b-a}\\)，其中`low`=`a`, `high`=`b`
+
+- `numpy.random.vonmises(mu, kappa[, size]) `:`Mises`分布。其中`mu`为浮点数，`kappa`为大于等于0的浮点数。
+	- `Mises`分布：\\(p(x)= \frac{e^{\kappa \cos(x-\mu)}}{2\pi I_0(\kappa)} \\)，其中`mu`=\\( \mu \\)， `kappa`=\\( \kappa \\)， \\(I_0(\kappa) \\)是 `modified Bessel function of order 0`
+
+- `numpy.random.wald(mean, scale[, size]) `:`Wald`分布。其中`mean`为大于0的标量，`scale`为大于等于0的标量
+	- `Wald`分布：\\( P(x;\mu,\lambda)=\sqrt{\frac {\lambda}{2\pi x^{3}}} \exp \\{\frac{-\lambda(x-\mu)^{2}}{2\mu^{2}x}\\}\\)，其中`mean`=\\( \mu \\)， `scale`=\\(\lambda \\)
+
+- `numpy.random.weibull(a[, size])`： `Weibull`分布。其中`a`是个浮点数。
+	- `Weibull`分布: \\( p(x)= \frac {a}{\lambda} (\frac {x}{\lambda})^{a-1} e^{-(x/\lambda)^{a}}\\)，其中`a`=\\( a \\)，\\( lambda \\) 为`scale`
+
+- `numpy.random.zipf(a[, size])`:齐夫分布。其中`a`为大于1的浮点数。
+	- 齐夫分布： \\( p(x)=\frac {x^{-a}}{\zeta(a)}\\) ，其中 `a`=\\(a \\)， \\( \zeta \\) 为 ` Riemann Zeta `函数。
+
+### 2. RandomState类
+
+类式用法主要使用`numpy.random.RandomState`类，它是一个`Mersenne Twister`伪随机数生成器的容器。它提供了一些方法来生成各种各样概率分布的随机数。
+
+构造函数:`RandomState(seed)`。其中`seed`可以为`None`, `int`, `array_like`。这个`seed`是初始化伪随机数生成器。如果`seed`为`None`，则`RandomState`会尝试读取`/dev/urandom`或者`Windows analogure`来读取数据，或用者`clock`来做种子。
+
+> `Python`的`stdlib`模块`random`也提供了一个` Mersenne Twister`伪随机数生成器。但是`RandomState`提供了更多的概率分布函数。
+
+`RandomState`保证了通过使用同一个`seed`以及同样参数的方法序列调用会产生同样的随机数序列（除了浮点数精度上的区别）。
+
+`RandomState`提供了一些方法来产生各种分布的随机数。这些方法都有一个共同的参数`size`。
+
+- 如果`size`为`None`，则只产生一个随机数
+- 如果`size`为一个整数，则产生一个一维的随机数数组。
+- 如果`size`为一个元组，则生成一个多维的随机数数组。其中数组的形状由元组指定。
+
+#### a. 生成随机数的方法
+
+- `.bytes(length)`：等效于`numpy.random.bytes(...)`函数
+- `.choice(a[, size, replace, p])`：等效于`numpy.random.choice(...)`函数
+- `.rand(d0, d1, ..., dn)`：等效于`numpy.random.rand(...)`函数
+- `.randint(low[, high, size])`：等效于`numpy.random.randint(...)`函数
+- `.randn(d0, d1, ..., dn)` ：等效于`numpy.random.randn(...)`函数
+- `.random_integers(low[, high, size])`：等效于`numpy.random_integers.bytes(...)`函数
+- `.random_sample([size]) `：等效于`numpy.random.random_sample(...)`函数
+- `.tomaxint([size])`：等效于`numpy.random.tomaxint(...)`函数
+
+#### b. 排列组合的方法
+
+- `.shuffle(x)`：等效于`numpy.random.shuffle(...)`函数
+- `.permutation(x)` ：等效于`numpy.random.permutation(...)`函数
+
+#### c. 指定概率分布函数的方法
+
+- `.beta(a, b[, size])`：等效于`numpy.random.beta(...)`函数
+- `.binomial(n, p[, size])`：等效于`numpy.random.binomial(...)`函数
+- `.chisquare(df[, size])`：等效于`numpy.random.chisquare(...)`函数
+- `.dirichlet(alpha[, size])`：等效于`numpy.random.dirichlet(...)`函数
+- `.exponential([scale, size])`：等效于`numpy.random.exponential(...)`函数
+- `.f(dfnum, dfden[, size])`：等效于`numpy.random.f(...)`函数
+- `.gamma(shape[, scale, size])`：等效于`numpy.random.gamma(...)`函数
+- `.geometric(p[, size])`：等效于`numpy.random.geometric(...)`函数
+- `.gumbel([loc, scale, size])`：等效于`numpy.random.gumbel(...)`函数
+- `.hypergeometric(ngood, nbad, nsample[, size])`：等效于`numpy.random.hypergeometric(...)`函数
+- `.laplace([loc, scale, size])`：等效于`numpy.random.laplace(...)`函数
+- `.logistic([loc, scale, size])`：等效于`numpy.random.logistic(...)`函数
+- `.lognormal([mean, sigma, size]) `：等效于`numpy.random.lognormal(...)`函数
+- `.logseries(p[, size])`：等效于`numpy.random.logseries(...)`函数
+- `.multinomial(n, pvals[, size])`：等效于`numpy.random.multinomial(...)`函数
+- `.multivariate_normal(mean, cov[, size])`：等效于`numpy.random.multivariate_normal(...)`函数
+- `.negative_binomial(n, p[, size])`：等效于`numpy.random.negative_binomial(...)`函数
+- `.noncentral_chisquare(df, nonc[, size])`：等效于`numpy.random.noncentral_chisquare(...)`函数
+- `.noncentral_f(dfnum, dfden, nonc[, size])`：等效于`numpy.random.noncentral_f(...)`函数
+- `.normal([loc, scale, size])`：等效于`numpy.random.normal(...)`函数
+- `.pareto(a[, size])`：等效于`numpy.random.pareto(...)`函数
+-`. poisson([lam, size])`：等效于`numpy.random.poisson(...)`函数
+- `.power(a[, size])`：等效于`numpy.random.power(...)`函数
+- `.rayleigh([scale, size])`：等效于`numpy.random.rayleigh(...)`函数
+- `.standard_cauchy([size])`：等效于`numpy.random.standard_cauchy(...)`函数
+- `.standard_exponential([size])`：等效于`numpy.random.standard_exponential(...)`函数
+- `.standard_gamma(shape[, size])`：等效于`numpy.random.standard_gamma(...)`函数
+- `.standard_normal([size])`：等效于`numpy.random.standard_normal(...)`函数
+- `.standard_t(df[, size])`：等效于`numpy.random.standard_t(...)`函数
+- `.triangular(left, mode, right[, size]) `：等效于`numpy.random.triangular(...)`函数
+- `.uniform([low, high, size])`：等效于`numpy.random.uniform(...)`函数
+- `.vonmises(mu, kappa[, size])`：等效于`numpy.random.vonmises(...)`函数
+- `.wald(mean, scale[, size])`：等效于`numpy.random.wald(...)`函数
+- `.weibull(a[, size])`：等效于`numpy.random.weibull(...)`函数
+- `.zipf(a[, size])`：等效于`numpy.random.zipf(...)`函数
+
+#### d. 类式的其他函数
+
+- `seed(seed=None)`：该方法在`RandomState`被初始化时自动调用，你也可以反复调用它从而重新设置伪随机数生成器的种子。
+
+-  `get_state()`：该方法返回伪随机数生成器的内部状态。其结果是一个元组`(str, ndarray of 624 uints, int, int, float)`，依次为：
+	- 字符串`'MT19937'`
+	- 一维数组，其中是624个无符号整数`key`
+	- 一个整数`pos`
+	- 一个整数`has_gauss`
+	- 一个浮点数`cached_gaussian`
+- `set_state(state)`：该方法设置伪随机数生成器的内部状态,如果执行成功则返回`None。参数是个元组`(str, ndarray of 624 uints, int, int, float)`，依次为：
+	- 字符串`'MT19937'`
+	- 一维数组，其中是624个无符号整数`key`
+	- 一个整数`pos`
+	- 一个整数`has_gauss`
+	- 一个浮点数`cached_gaussian`
+
+## 四、统计函数
+
+### 1. 顺序统计
+
+- `numpy.amin(a[, axis, out, keepdims])` ：返回`a`中指定轴线上的最小值（数组）、或者返回`a`上的最小值（标量）。
+- `numpy.amax(a[, axis, out, keepdims])` ：返回`a`中指定轴线上的最大值（数组）、或者返回`a`上的最小值（标量）。
+- `numpy.nanmin(a[, axis, out, keepdims])`: 返回`a`中指定轴线上的最小值（数组）、或者返回`a`上的最小值（标量），忽略`NaN`。
+- `numpy.nanmax(a[, axis, out, keepdims])` :返回`a`中指定轴线上的最大值（数组）、或者返回`a`上的最小值（标量）忽略`NaN`。
+- `numpy.ptp(a[, axis, out])` ：返回`a`中指定轴线上的`maximum减去minimum`（数组），即`peak to peak`
+- `numpy.percentile(a, q[, axis, out, ...])` ：返回`a`中指定轴线上`qth 百分比`数据
+- `numpy.nanpercentile(a, q[, axis, out, ...])`：返回`a`中指定轴线上`qth 百分比`数据
+
+这里是共同的参数：
+
+- `a`：一个`array_like`对象
+- `axis`：可以为为`int`或者`tuple`或者`None`：
+	- `None`：将`a`展平，在整个数组上操作
+	- `int`：在`a`的指定轴线上操作
+	- `tuple of ints`：在`a`的一组指定轴线上操作
+- `out`：可选的输出位置。必须与期望的结果形状相同
+- `keepdims`：如果为`True`，则被操作的轴线上的数据会保留在结果中。
+
+### 2. 均值和方差
+
+- `numpy.median(a[, axis, out, overwrite_input, keepdims])`:计算`a`在指定轴上的中位数
+- `numpy.average(a[, axis, weights, returned])`:计算`a`在指定轴上的加权平均数
+- `numpy.mean(a[, axis, dtype, out, keepdims])` :计算`a`在指定轴上的算术均值
+- `numpy.std(a[, axis, dtype, out, ddof, keepdims])`:计算`a`在指定轴上的标准差
+- `numpy.var(a[, axis, dtype, out, ddof, keepdims])` :计算`a`在指定轴上的方差
+- `numpy.nanmedian(a[, axis, out, overwrite_input, ...])` :计算`a`在指定轴上的中位数，忽略`NaN`
+- `numpy.nanmean(a[, axis, dtype, out, keepdims])`  :计算`a`在指定轴上的算术均值，忽略`NaN`
+- `numpy.nanstd(a[, axis, dtype, out, ddof, keepdims])`:计算`a`在指定轴上的标准差，忽略`NaN`
+- `numpy.nanvar(a[, axis, dtype, out, ddof, keepdims])` :计算`a`在指定轴上的方差，忽略`NaN`
+
+这里是共同的参数：
+
+- `a`：一个`array_like`对象
+- `axis`：可以为为`int`或者`tuple`或者`None`：
+	- `None`：将`a`展平，在整个数组上操作
+	- `int`：在`a`的指定轴线上操作
+	- `tuple of ints`：在`a`的一组指定轴线上操作
+- `out`：可选的输出位置。必须与期望的结果形状相同
+
+### 3. 相关系数
+
+- `numpy.corrcoef(x[, y, rowvar, bias, ddof])` : 返回皮尔逊积差相关
+- `numpy.correlate(a, v[, mode])` ：返回两个一维数组的互相关系数
+- `numpy.cov(m[, y, rowvar, bias, ddof, fweights, ...])`：返回协方差矩阵
+
+### 4. 直方图
+
+- `numpy.histogram(a[, bins, range, normed, weights, ...])`:计算一组数据的直方图
+- `numpy.histogram2d(x, y[, bins, range, normed, weights])` ：计算两组数据的二维直方图
+- `numpy.histogramdd(sample[, bins, range, normed, ...])` ：计算多维数据的直方图
+- `numpy.bincount(x[, weights, minlength])`：计算每个数出现的次数
+- `numpy.digitize(x, bins[, right])` ：返回每个数属于哪个`bin`
+
+## 五、技巧
 
 ### 1. 自动形状推断
 
 当你修改`ndarray`的形状时，你可以省略某个维度的尺寸（设置为`-1`，该维度尺寸会自动推断出来。如：
 `a.shape=2,-1,3 # -1 表示能够自动推断出来`
 
-### 2. `histogram` 
+### 2.  histogram  
 
 `numpy.histogram(a, bins=10, range=None, normed=False, weights=None, density=None)`函数应用到一个数组返回一对变量：
 
@@ -431,3 +747,31 @@
   ![hist](./imgs/numpy/matplotlib_hist.JPG)
 
   ![histogram](./imgs/numpy/histogram_function.JPG)
+
+### 3. NaN和无穷大
+
+在`numpy`中，有几个特殊的数：
+
+- `numpy.nan`表示`NaN`（`Not a Number`），它并不等价于`numpy.inf`（无穷大）。
+- `numpy.inf`：正无穷
+- `numpy.PINF`：正无穷（它就引用的是`numpy.inf`）
+- `numpy.NINF`：负无穷
+
+有下列函数用于判断这几个特殊的数：
+
+- `numpy.isnan(x[,out])`：返回`x`是否是个`NaN`，其中`x`可以是标量，可以是数组
+- `numpy.isfinite(x[, out])`：返回`x`是否是个有限大小的数，其中`x`可以是标量，可以是数组
+	> `numpy.isfinite(np.nan)`返回`False`，因为`NaN`首先就不是一个数
+- `numpy.isposinf(x[, out])`：返回`x`是否是个正无穷大的数，其中`x`可以是标量，可以是数组
+	> `numpy.isposinf(np.nan)`返回`False`，因为`NaN`首先就不是一个数	
+- `numpy.isneginf(x[, out])`：返回`x`是否是个负无穷大的数，其中`x`可以是标量，可以是数组
+	> `numpy.isneginf(np.nan)`返回`False`，因为`NaN`首先就不是一个数
+- `numpy.isinf(x[, out])`：返回`x`是否是个无穷大的数，其中`x`可以是标量，可以是数组
+	> `numpy.isinf(np.nan)`返回`False`，因为`NaN`首先就不是一个数
+
+下列函数用于对这几个特殊的数进行转换：
+
+- `numpy.nan_to_num(x)`：将`x`中的下列数字替换掉，返回替换掉之后的新数组：
+	- `NaN`：替换为0
+	- 正无穷：替换为一个非常大的数字
+	- 负无穷：替换为一个非常小的数字

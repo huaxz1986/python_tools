@@ -9,14 +9,14 @@ VirtualEnv用于创建独立的Python虚拟环境，这些独立的Python虚拟�
 ## 一、安装VirtualEnv
 通过`pip install virtualenv`命令可以安装VirtualEnv
 
-![安装virtualenv](./imgs/virtualenv/1.JPG)
+![安装virtualenv](./imgs/virtualenv/install.JPG)
 
 ## 二、创建独立的Python虚拟环境
 创建独立的Python虚拟环境命令为：
 
 	virtualenv ENV
 
-  ![创建虚拟环境](./imgs/virtualenv/2.JPG)
+  ![创建虚拟环境](./imgs/virtualenv/usage.JPG)
   
 > 如果你使用了 `virtualenv --system-site-packages ENV`，那么你的虚拟环境会直接将`global site-packages`目录下的包拿来用。
 
@@ -31,7 +31,7 @@ VirtualEnv用于创建独立的Python虚拟环境，这些独立的Python虚拟�
   其中`ENV\Scripts\pip` 是与当前虚拟环境中相关的 pip
 * 安装关键的 pip 以及 setuptools 这两个 package。
 
- ![ENV环境](./imgs/virtualenv/3.jpg)
+ ![ENV环境](./imgs/virtualenv/win_files.jpg)
 
 ### 2. Unix/OSX下
 
@@ -47,7 +47,7 @@ VirtualEnv用于创建独立的Python虚拟环境，这些独立的Python虚拟�
 在新创建的Python虚拟环境中，有一个激活脚本。在 Windows系统中，激活脚本位于`ENV\Scripts\activate.bat`。
 在CMD中执行中执行`ENV\Scripts\activate.bat`脚本则激活了虚拟环境。
 
-![激活ENV环境](./imgs/virtualenv/4.JPG)
+![激活ENV环境](./imgs/virtualenv/win_activate.JPG)
 
 该脚本本质上是修改`$PATH`环境变量，使得环境变量的第一项为`ENV\Scripts\`目录。同时修改你的SHELL命令提示符，从而提示你这是在一个Python虚拟环境中。
 
@@ -64,7 +64,7 @@ VirtualEnv用于创建独立的Python虚拟环境，这些独立的Python虚拟�
 ## 四、退出虚拟环境
 退出虚拟环境，在shell中键入`deactivate`命令即可
 
-![退出ENV环境](./imgs/virtualenv/5.JPG)
+![退出ENV环境](./imgs/virtualenv/deactivate.JPG)
 
 ## 五、移除Python虚拟环境
 移除之前首先退出Python虚拟环境，然后删除ENV文件夹即可

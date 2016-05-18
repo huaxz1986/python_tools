@@ -12,7 +12,7 @@
 * 在Linux或者OSX平台上执行命令 `pip install -U pip`
 * 在Windows平台上执行命令`python -m pip install -U pip`
 
-  ![Windows下更新pip](./imgs/pip/1.JPG)
+  ![Windows下更新pip](./imgs/pip/update.JPG)
 
 ## 二、使用pip
 
@@ -25,7 +25,7 @@ pip安装package最常见的就是从PyPI安装，从 [PyPI](http://pypi.python.
 	pip install SomePackage==1.0.4  #安装指定版本
 	pip install 'SomePackage>=1.0.4' #minimum版本
 
-  ![安装package](./imgs/pip/2.JPG)
+  ![安装package](./imgs/pip/install_package.JPG)
 
 >从PyPI用pip安装时，可能因为网络问题发生超时。此时可以指定国内镜像源，命令为：
 >`pip install SomePackage -i http://example.com`
@@ -57,9 +57,9 @@ Whell文件时一个打包的构建好的文件格式，比从源代码build然�
 	pip show SomePackage #查看该package详细信息
 	pip show --files SomePackage #查看该package已安装哪些文件
 
-  ![查看已安装package详细信息](./imgs/pip/3.JPG)
+  ![查看已安装package详细信息](./imgs/pip/show_package.JPG)
 
-  ![查看已安装package安装文件](./imgs/pip/4.JPG)
+  ![查看已安装package安装文件](./imgs/pip/show_package_detail.JPG)
 
 #### b. 查看所有已经安装package
 查看已经安装了哪些package的命令为：
@@ -67,9 +67,9 @@ Whell文件时一个打包的构建好的文件格式，比从源代码build然�
 	pip list #列出所有已安装的package
 	pip list --outdated #列出所有outdated package
 
-  ![查看已安装package list](./imgs/pip/5.JPG)
+  ![查看已安装package list](./imgs/pip/list_package.JPG)
 
-  ![查看已安装但是outdated的package list](./imgs/pip/6.JPG)
+  ![查看已安装但是outdated的package list](./imgs/pip/list_outdatedpackage.JPG)
 
 
 ### 3.更新package
@@ -77,7 +77,7 @@ Whell文件时一个打包的构建好的文件格式，比从源代码build然�
 
 	pip install --upgrade SomePackage
 
-  ![更新 package](./imgs/pip/7.JPG)
+  ![更新 package](./imgs/pip/update_package.JPG)
 
 
 ### 4.卸载package
@@ -86,21 +86,21 @@ Whell文件时一个打包的构建好的文件格式，比从源代码build然�
 
 	pip uninstall SomePackage
 
-  ![卸载 package](./imgs/pip/8.JPG)
+  ![卸载 package](./imgs/pip/uninstall_package.JPG)
 
 ### 5.寻找package
 寻找package的命令为：
 
 	pip search "query"
 
-  ![寻找 package](./imgs/pip/9.JPG)
+  ![寻找 package](./imgs/pip/search_package.JPG)
 
 ### 6. pip freeze
 pip freeze命令是输出当前已安装package的依赖列表，方便于复制当前已安装的package。命令为：
 
 		pip freeze
 
-  ![pip freeze](./imgs/pip/10.JPG)
+  ![pip freeze](./imgs/pip/freeze_package.JPG)
 
 #### a. 生成requirement文件
 可以通过重定向输出从而产生requirement文件，命令为： `pip freeze > requirements.txt`
@@ -173,6 +173,6 @@ Python支持用户级安装。所谓用户级安装用于以下两种情形：
 
 所有的pip命令，这些命令后面添加`--user`，则会特别针对用户级安装目录。
 
-  ![pip --user选项](./imgs/pip/11.JPG)
+  ![pip --user选项](./imgs/pip/user_options.JPG) 
 
 

@@ -12,22 +12,22 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
 ### 1. 查看配置
 你可以通过 `matplotlib.rcParams`字典访问所有已经加载的配置项
 
-  ![查看matplotlib配置](./imgs/matplotlib/1.JPG)
+  ![查看matplotlib配置](./imgs/matplotlib/settings_from_rcParams.JPG)
 
 ### 2. 修改配置
 
 - 你可以通过 `matplotlib.rcParams`字典修改所有已经加载的配置项
 
-  ![通过rcParams修改配置](./imgs/matplotlib/2.JPG)
+  ![通过rcParams修改配置](./imgs/matplotlib/modify_settings_with_rcParams.JPG) 
 
 - 你可以通过`matplotlib.rc(*args,**kwargs)`来修改配置项，其中`args`
   是你要修改的属性，`kwargs`是属性的关键字属性
 
-  ![通过rc函数修改配置](./imgs/matplotlib/3.JPG)
+  ![通过rc函数修改配置](./imgs/matplotlib/modify_settings_with_rc.JPG)
 
 - 你可以调用`matplotlib.rcdefaults()`将所有配置重置为标准设置。
 
-  ![恢复默认配置](./imgs/matplotlib/4.JPG)
+  ![恢复默认配置](./imgs/matplotlib/reset_settings.JPG)
   
 ### 3. 配置文件
 
@@ -36,7 +36,7 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
 - 系统级配置文件。通常在python的`site-packages`目录下。每次重装`matplotlib`之后该配置文件就会被覆盖。
 - 用户级配置文件。通常在`$HOME`目录下。可以用`matplotlib.get_configdir()`命令来查找当前用户的配置文件目录。
 
-  ![恢复默认配置](./imgs/matplotlib/5.JPG)
+  ![恢复默认配置](./imgs/matplotlib/setting_files.JPG)
   
 - 当前工作目录。即项目的目录。在当前目录下，可以为目录所包含的当前项目给出配置文件，文件名为`matplotlibrc`。
 
@@ -71,7 +71,7 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
   以及`AxesImage`等等。
 - `container`：代表了放置`primitive`的那些绘图组件。比如`Axis`、`Axes`以及`Figure`，如图所示
 
-  ![Artist](./imgs/matplotlib/15.JPG)
+  ![Artist](./imgs/matplotlib/Artist.JPG)
 
 `matplotlib`的标准使用流程为：
 
@@ -96,9 +96,11 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
 	- `clip_path`属性：`Artist`沿着该`path`执行`clip`
 	- `contains`属性：一个`picking function`用于测试`Artist`是否包含`pick point`
 	- `figure`属性：该`Artist`所属的`Figure`，可能为`None`
+	- `gid`属性：该`Artist`的`id`字符串
 	- `label`：一个`text label`
 	- `picker`:一个`python object`用于控制`object picking`
 	- `transform`：转换矩阵
+	- `.url`属性：一个`url string`，代表本`Artist`
 	- `visible`：布尔值，控制`Artist`是否绘制
 	- `zorder`：决定了`Artist`的绘制顺序。`zorder`越小就越底层，则越优先绘制。
 	>这些属性可以通过旧式的`setter`和`getter`函数访问和设置。如：
@@ -108,9 +110,11 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
 	> - 你可以使用`matplotlib.artist.getp(o)`来一次获取`o`的所有属性
 	>
 
-  ![Artist所有属性](./imgs/matplotlib/6.JPG)
+  ![Artist所有属性](./imgs/matplotlib/Artist_attribute.JPG)
 
-### 2. Figure 
+### 2. container Artist:
+
+#### a. Figure 
 
 `matplotlib.figure.Figure`是最顶层的`container Artist`，它包含了图表中的所有元素。
 
@@ -122,7 +126,7 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
 - `Figure.patches`属性：持有的一个`Figure pathes`实例列表（很少使用)
 - `Figure.texts`属性：持有的`Figure Text`实例列表
 
-#### a. `Figure` 的 `Axes`
+##### 1> Figure 的 Axes
 
 当你执行`Figure.add_subplot()`或者`Figure.add_axes()`时，这些新建的`Axes`都被添加到`Figure.axes`列表中。
 
@@ -130,13 +134,13 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
 
 可以通过`Figure.gca()`获取`current axes`，通过`Figure.sca()`设置`current axes`。
 
-#### b. `Figure`的`primitive`
+##### 2> Figure 的 primitive
 
 `Figure`也有它自己的`text`、`line`、`patch`、`image`。你可以直接通过`add primitive`语句直接添加。但是注意`Figure`默认的坐标系是以像素为单位，你可能需要转换成`figure`坐标系：(0,0)表示左下点，(1,1)表示右上点。
 
-  ![Figure](./imgs/matplotlib/7.JPG)
+  ![Figure](./imgs/matplotlib/Figure_attribute.JPG)
 
-### 2. Axes类
+#### b. Axes类
 
 `Axes`类是`matplotlib`的核心，你在大多数时间都是在与它打交道。`Axes`代表了`plotting area`。大量的用于绘图的`Artist`存放在它内部，并且它有许多辅助方法来创建和添加`Artist`给它自己，而且它也有许多赋值方法来访问和修改这些`Artist`。
 
@@ -144,29 +148,29 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
 
 `Subplot`就是一个特殊的`Axes`，其实例是位于网格中某个区域的`Subplot`实例。其实你也可以在任意区域创建`Axes`，通过`Figure.add_axes([left,bottom,width,height])`来创建一个任意区域的`Axes`，其中`left,bottom,width,height`都是[0--1]之间的浮点数，他们代表了相对于`Figure`的坐标。
 
-  ![Axes类](./imgs/matplotlib/8.JPG)
+  ![Axes类](./imgs/matplotlib/Axes.JPG)
 
-#### a.`.patch`属性
+##### 1> .patch 属性
 
 `Axes`包含了一个`.patch`属性，对于卡迪尔坐标系而言，它是一个`Rectangle`；对于极坐标而言，它是一个`Circle`。这个`.patch`属性决定了`plotting region`的形状、背景和边框。
 
- ![Axes背景](./imgs/matplotlib/9.JPG)
+ ![Axes背景](./imgs/matplotlib/Axes_patch.JPG)
 
-#### b. 常用绘图方法
+##### 2> 常用绘图方法
 
 当调用`Axes.plot()`方法时，该方法会创建一个`matplotlib.lines.Line2D`实例，然后会利用传给`.plot()`的关键字参数来更新该`Line2D`的属性，然后将这个`Line2D`添加到`Axes.lines`列表中。该方法返回的刚创建的`Line2D`列表，因为你可以传递多个`(x,y)`值从而创建多个`Line2D`。
 
 当调用`Axes.hist()`方法时，类似于`.plot()`方法，不过它会添加`patches`到`Axes.patches`列表。
 
-  ![Axe绘图方法](./imgs/matplotlib/10.JPG)
+  ![Axe绘图方法](./imgs/matplotlib/Axes_plot_method.JPG)
 
 你不应该直接通过`Axes.lines`和`Axes.patches`列表来添加图表。因为当你通过`.plot()`和`.hist()`等方法添加图表时，`matplotlib`会做许多工作而不仅仅是添加绘图组件到`Axes.lines`或者`Axes.patches`列表中。
 
 但是你可以使用`Axes`的辅助方法`.add_line()`和`.add_patch()`方法来添加。
 
-  ![Axe手动添加绘图组件](./imgs/matplotlib/11.JPG)
+  ![Axe手动添加绘图组件](./imgs/matplotlib/Axes_add_plots.JPG)
 
-#### c. 常用`Axes`方法
+##### 3> 常用 Axes 方法
 
 下面是`Axes`用于创建`primitive Artist`以及添加他们到相应的`container`中的方法：
 
@@ -183,7 +187,7 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
   `ax.collections`列表中。
 - `ax.text()`：创建`text`（`Text`对象），然后添加到`ax.texts`列表中。
 
-#### d. `Axes`的坐标轴
+##### 4>  Axes 的坐标轴
 另外`Axes`还包含两个最重要的`Artist container`：
 
 - `ax.xaxis`：`XAxis`对象的实例，用于处理`x`轴`tick`以及`label`的绘制
@@ -191,9 +195,9 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
 
 `Axes`包含了许多辅助方法来访问和修改`XAxis`和`YAxis`，这些辅助方法其实内部调用的是`XAxis`和`YAxis`的方法。因此通常情况下你不需要直接调用`XAxis`和`YAxis`的方法。
 
-  ![Axe坐标轴](./imgs/matplotlib/12.JPG)
+  ![Axe坐标轴](./imgs/matplotlib/Axes_axis.JPG)
 
-### 3. Axis类
+#### c. Axis类
 
 `matplotlib.axis.Axis`实例处理`tick line`、`grid line`、`tick label`以及`axis label`的绘制。通常你可以独立的配置`y`轴的左边`tick`以及右边的`tick`，也可以独立地配置`x`轴的上边`tick`以及下边的`tick`。
 
@@ -222,9 +226,9 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
 - `Axis.get_minor_formatter()`:获取`minor tick formatter`(一个`matplotlib.ticker.Formatter`实例)
 - `Axis.grid()`:一个开关，用于控制`major`或者`minor`的`tick`的`on|off`
 
-  ![Axis tick](./imgs/matplotlib/13.JPG)
+  ![Axis tick](./imgs/matplotlib/Axis.JPG)
 
-### 4. Tick类
+#### d. Tick类
 
 `matplotlib.axis.Tick`类是从`Figure`-->`Axes`-->`Tick`这个`container`体系中最末端的`container`。`Tick`容纳了`tick`、`grid line`以及`tick`对应的`label`。所有的这些都可以通过`Tick`的属性获取:
 
@@ -242,7 +246,322 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
 > `y`轴分为左右两个，因此`tick1*`对应左侧的轴；`tick2*`对应右侧的轴。
 > `x`轴分为上下两个，因此`tick1*`对应上侧的轴；`tick2*`对应下侧的轴。
 
-  ![Tick](./imgs/matplotlib/14.JPG)
+  ![Tick](./imgs/matplotlib/Tick.JPG)
+
+### 3. primitive
+
+#### a. Line2D类
+
+`matplotlib.lines.Line2D`类是`matplotlib`中的曲线类（基类是`matplotlib.artist.Artist`），它可以有各种各样的颜色、类型、以及标注等等。它的构造函数为：
+
+```
+Line2D(xdata, ydata, linewidth=None, linestyle=None,
+	color=None, marker=None, markersize=None, markeredgewidth
+	=None, markeredgecolor=None, markerfacecolor
+	=None, markerfacecoloralt=’none’, fillstyle=None,
+	antialiased=None, dash_capstyle=None, solid_capstyle=None,
+	dash_joinstyle=None, solid_joinstyle=None, pickradius=5,
+	drawstyle=None, markevery=None, **kwargs)
+```
+
+这些关键字参数都是`Line2D`的属性。其属性有：
+
+-  继承自`Artist`基类的属性：
+ `.alpha`、`.animated`、`.axes`、`.clip_box`、.`.clip_on`、`.clip_path`、`.contains`、`.figure`、`.gid`、`.label`、`.picker`、`.transform`、`.url`、`.visible`、`.zorder`
+- `.antialiased`或者`.aa`属性：一个布尔值。如果为`True`则表示线条是抗锯齿处理的
+- `.color`或者`.c`属性：一个`matplotlib color`值，表示线条的颜色，
+- `.dash_capstyle`属性：为`'butt' or 'round' or 'projecting'`，表示虚线头端类型
+- `.dash_joinstyle`属性：为`'miter' or 'round' or 'bevel'`，表示虚线连接处类型
+- `.dashes`属性：一个数值序列，表示虚线的实部、虚部的尺寸。如果为`(None,None)`则虚线成为实线
+- `.drawstyle`属性：为`'default'or'steps'or'step-pre'or'step-mid'or'step-post'`，表示曲线类型。
+	- `'default'`：点之间以直线连接
+	- `'steps*'`：绘制阶梯图。其中`steps`等价于`steps-pre`，是为了保持兼容旧代码
+- `.fillstyle`属性：为`'full'or'left'or'right'or'bottom'or'top'or'none'`表示`marker`的填充类型。
+	- `'full'`：填充整个`marker`
+	- `none`：不填充`marker`
+	- 其他值：表示填充一半`marker`	
+- `.linestyle`或者`ls`属性：指定线型，可以为以下值：
+	- `'-'`或者`'solid'`：表示实线
+	- `'--'`或者`dashed`：表示虚线
+	- `'-.'`或者`dash_dot`：表示点划线
+	- `':'`或者`'dotted'`：表示点线
+	- `'None'`或者`' '`或者`''`：表示没有线条（不画线）
+- `.linewidth`或者`lw`属性：为浮点值，表示线条宽度
+- `.marker`属性：可以为一系列的字符串，如`'.'、','、'o'....`,表示线条的`marker`
+- `.markeredgecolor`或者`.mec`属性:可以为`matplotlib color`，表示`marker`的边的颜色
+- `.markeredgewidth`或者`.mew`属性:可以为浮点数，表示`marker`边的宽度
+- `.markerfacecolor`或者`.mfc`属性：可以为`matplotlib color`，表示`marker`的前景色
+- `.markerfacecoloralt`或者`.mfcalt`属性：可以为`matplotlib color`，表示`marker`的可选前景色
+- `.markersize`或者`.ms`属性：可以为浮点数，表示`marker`的大小
+- `.markevery`属性：指定每隔多少个点绘制一个`marker`，可以为以下值：
+	- `None`：表示每个点都绘制`marker`
+	- `N`：表示每隔`N`个点绘制`marker`，从0开始
+	- `(start,N)`：表示每隔`N`个点绘制`marker`，从`start`开始
+	- `[i,j,m,n]`：只有点`i,j,m,n`的`marker`绘制
+	- ...其他值参考文档
+- `.pickradius`属性：浮点值，表示`pick radius`
+- `.solid_capstyle`属性：可以为`'butt'、'round'、'projecting'`，表示实线的头端类型
+- `.sold_joinstyle`属性：可以为`'miter'、'round'、'bevel'`，表示实线连接处的类型
+- `.xdata`属性：可以为一维的`numpy.array`，表示`x`轴数据
+- `.ydata`属性：可以为一维的`numpy.array`，表示`y`轴数据
+
+
+
+#### b. Text类
+
+`matplotlib.text.Text`类是绘制文字的类（基类是`matplotlib.artist.Artist`）。它的构造函数为：
+
+```
+Text(x=0, y=0, text='', color=None, verticalalignment='baseline',
+	horizontalalignment=’left’, multialignment=None, fontproperties
+	=None, rotation=None, linespacing=None, rotation_
+	mode=None, usetex=None, wrap=False, **kwargs)
+```
+
+这些关键字参数也是属性。其属性有：
+
+-  继承自`Artist`基类的属性：
+ `.alpha`、`.animated`、`.axes`、`.clip_box`、.`.clip_on`、`.clip_path`、`.contains`、`.figure`、`.gid`、`.label`、`.picker`、`.transform`、`.url`、`.visible`、`.zorder`
+- `.backgroundcolor`属性：背景色，可以为任何`matplotlib color`
+- `.bbox`属性：文本框的边框。其值是`FancyBboxPatch`类的属性字典。
+- `.color`属性：字体颜色，可以为任何`matplotlib color`
+- `.family`或者`.name`或者`.fontfamily`或者`.fontname`属性：字体的名字。可以是`string`或者`string list`（表示可以为若干个名字，优先级依次递减）。`string`必须是一个真实字体的名字，或者一个字体的`class name`。
+- `.fontproperties`或者`.font_properties`属性：字体的属性，值是一个`matplotlib.font_manager.FontProperties`实例（该实例一次性设置字体的很多属性，比如字体类型、字体名字、字体大小、宽度、...）
+- `.horizontalalignment`或者`.ha`属性：水平对齐方式，可以为`'center'、'right'、'left'`
+- `.linespacing`属性：为浮点数，单位为`font size`，表示行间距
+- `.multialignment`属性：`multiline text`对齐方式，可以为`'left'、'right'、'center'`
+- `.position`属性：为一个元组`(x,y)`，表示文本框的位置
+- `.rotation`属性：字体旋转角度。可以为下列值：
+	- 浮点数，表示角度
+	- `'vertical'、'horizontal'`
+- `.rotation_mode`属性：旋转模式。可以为下列值：
+	- `'anchor'`：文本首先对齐，然后根据对齐点来旋转
+	- `None`：文本先旋转，再对齐
+- `.size`或者`.fontsize`属性：字体大小。可以为下列值：
+	- 浮点值，表示字体大小
+	- `'xx-small'、'x-small'、'small'、'medium'、'large'、'x-large'、'xx-large'`
+- `.stretch`或者`.fontstretch`属性：字体沿水平方向的拉伸。可以为下列值：
+	- 整数，在[0---1000]之间
+	- `'ultra-condensed'、'extra-condensed'、'condensed'、'semi-condensed'、'normal'、'semi-expanded'、'expanded'、'extra-expanded'、'ultra-expanded'`
+- `.style`或者`.fontstyle`属性：字体样式，可以为`'normal'、'italic'、'oblique'`
+- `.text`属性:文本字符串，可以为任意字符串（他可以包含`'\n'`换行符或者`LATEX`语法）
+- `.variant`或者`.fontvariant`属性：表示字体形变，可以为下列值：`'normal'、'small-caps'`
+- `.verticalalignment`或者`.ma`或者`.va`属性：表示文本的垂直对齐，可以为下列值：
+	- `'center'、'top'、'bottom'、'baseline'`
+- `.weight`或者`.fontweight`属性：设置字体的`weight`，可以为下列值：
+	- 一个整数值，在[0---1000]之间
+	- `'ultralight'、'light'、'normal'、'regular'、'book'、'medium'、
+	'roman'、'semibold'、'demibold'、'demi'、'bold'、'heavy'、
+	'extrabold'、'black'`
+- `.x`属性：一个浮点值，表示文本框位置的`x`值
+- `.y`属性：一个浮点值，表示文本框位置的`y`值
+
+#### c. Annotation类
+
+`matplotlib.text.Annotation`类是图表中的图式，它是一个带箭头的文本框，用于解说图表中的图形。它的基类是`matplotlib.text.Text`和` matplotlib.text._AnnotationBase`。其构造函数为：
+
+```
+Annotation(s, xy, xytext=None, xycoords=’data’, textcoords=None, arrowprops
+	=None, annotation_clip=None, **kwargs)
+```
+
+在位置`xytext`处放置一个文本框，该文本框用于解释点`xy`，文本框的文本为`s`。
+
+- `s`：文本框的文本字符串
+- `xy`：被解释的点的坐标
+- `xytext`：文本框放置的位置。如果为`None`，则默认取`xy`
+- `xycoords`：`xy`坐标系，默认取`'data'`坐标系（即`xy`是数据坐标系中的点）。可以为以下值：
+	- `'figure points'`：从`figure`左下角开始的点
+	- `'figure pixesl'`：从`figure`左下角开始的像素值
+	- `'figure fraction'`：`(0,0)`代表`figure`的左下角，`(1,1)`代表`figure`的右上角
+	- `'axes points'`：从`axes`左下角开始的点
+	- `'axes pixels'`：从`axes`左下角开始的像素
+	- `'axes fraction'`：`(0,0)`代表`axes`的左下角，`(1,1)`代表`axes`的右上角
+	- `'data'`：使用被标注对象的坐标系
+	- `'offset points'`：指定从`xy`的便宜点
+	- `'polar'`：极坐标系
+- `textcoords`：文本框坐标系（即`xytext`是文本坐标系中的点），默认等于`xycoords`
+- `arrowprops`：指定文本框和被解释的点之间的箭头。如果不是`None`，则是一个字典，该字典设定了`matplotlib.lines.Line2D`的属性。
+	- 如果该字典有一个`arrowstyle`属性，则该键对应的值也是一个字典，创建一个`FancyArrowsPatch`实例，
+	  实例属性由该字典指定。
+	- 如果该字典没有`arrowstyle`属性，则创建一个`YAArrow`实例，
+- `annotation_clip`：控制超出`axes`区域的`annotation`的显示。如果为`True`则`annotation`
+  只显示位于`axes`区域内的内容。
+- 额外的关键字参数全部是设置`Text`的属性
+
+#### d. Legend
+
+`matplotlib.legend.Legend`是图例类，它的基类是`matplotlib.artist.Artist`。其构造函数为：
+
+```
+Legend(parent, handles, labels, loc=None, numpoints=None, markerscale
+	=None, markerfirst=True, scatterpoints=None,
+	scatteryosets=None, prop=None, fontsize=None, borderpad
+	=None, labelspacing=None, handlelength=None,
+	handleheight=None, handletextpad=None, borderaxespad
+	=None, columnspacing=None, ncol=1, mode=None,
+	fancybox=None, shadow=None, title=None, framealpha
+	=None, bbox_to_anchor=None, bbox_transform=None,
+	frameon=None, handler_map=None)
+```
+
+其关键字参数为：
+
+- `parent`：持有该`legend`的`artist`
+- `loc`:图例的位置。其值可以为字符串或者数字：
+	- `best`或0：自动计算
+	- `upper right`或1： 右上角
+	- `upper left`或2：上角
+	- `lower left`或3：下角
+	- `lower right`或4：右下角
+	- `right`或5：右边
+	- `center left`或6：中间偏左
+	- `center right`或7：中间偏右
+	- `lower center`或8：中间底部
+	- `upper center`或9：中间顶部
+	- `center`或10：正中央
+- `handle`：一个`artist`列表，添加这些`artist`到`legend`中
+- `lebels`：一个字符串列表添加到`legend`中
+- `prop`:字体属性
+- `fontsize`: 字体大小（只有`prop`未设置时有效）
+- `markerscale`: `marker`的缩放比例（相对于原始大小）
+- `markerfirst`: 如果为`True`，则`marker`放在`label`左侧；否则`marker`放在`label`右侧
+- `numpoints`: the number of points in the legend for line
+- `scatterpoints`: the number of points in the legend for scatter plot
+- `scatteryosets`: a list of yosets for scatter symbols in legend
+- `frameon`: if True, draw a frame around the legend. If None, use rc
+- `fancybox`: if True, draw a frame with a round fancybox. If None, use rc
+- `shadow`: if True, draw a shadow behind legend
+- `framealpha`: If not None, alpha channel for the frame.
+- `ncol`: number of columns
+- `borderpad`: the fractional whitespace inside the legend border
+- `labelspacing`: the vertical space between the legend entries
+- `handlelength`: the length of the legend handles
+- `handleheight`: the height of the legend handles
+- `handletextpad`: the pad between the legend handle and text
+- `borderaxespad`: the pad between the axes and legend border
+- `columnspacing`:the spacing between columns
+- `title`: 图例的标题
+- `bbox_to_anchor`: the bbox that the legend will be anchored.
+- `bbox_transform`: the transform for the bbox. transAxes if Noneloc a location code
+- 其他关键字参数用于设置属性
+
+属性为：
+
+-  继承自`Artist`基类的属性：
+ `.alpha`、`.animated`、`.axes`、`.clip_box`、.`.clip_on`、`.clip_path`、`.contains`、`.figure`、`.gid`、`.label`、`.picker`、`.transform`、`.url`、`.visible`、`.zorder`
+
+
+#### e. Patch类
+
+`matplotlib.patches.Patch`类是二维图形类。它的基类是`matplotlib.artist.Artist`。其构造函数为：
+
+```
+Patch(edgecolor=None, facecolor=None, color=None,
+linewidth=None, linestyle=None, antialiased=None,
+hatch=None, fill=True, capstyle=None, joinstyle=None,
+**kwargs)
+```
+
+参数为：
+
+- `edgecolor`：可以为`matplotlib color`，表示边线条的颜色，若为`none`则表示无颜色
+- `facecolor`：可以为`matplotlib color`，表示前景色，若为`none`则表示无颜色
+- `color`可以为`matplotlib color`，表示边线条和前景色的颜色。
+- `linewidth`：为浮点数，表示线条宽度
+- `linestyle`：指定线型，可以为以下值：
+	- `'-'`或者`'solid'`：表示实线
+	- `'--'`或者`dashed`：表示虚线
+	- `'-.'`或者`dash_dot`：表示点划线
+	- `':'`或者`'dotted'`：表示点线
+	- `'None'`或者`' '`或者`''`：表示没有线条（不画线）
+- `antialiased`：一个布尔值。如果为`True`则表示线条是抗锯齿处理的
+- `hatch`：设置`hatching pattern`，可以为下列的值：
+	- `'\'`、`'|'`、`'-'`、`'+'`、`'x'`、`'o'`、`'0'`、`'.'`、`'*'`
+- `fill`：为布尔值。如果为`True`则填充图形，否则不填充
+- `capstyle`：为`'butt' or 'round' or 'projecting'`，表示线条头端类型
+- `joinstyle`：可以为`'miter'、'round'、'bevel'`，表示矩形线条接头类型
+- 其他关键字参数用于设置属性
+
+> 如果 `edgecolor, facecolor, linewidth, or antialiased` 为`None`则这些值从` rc params`中读取
+
+属性如下：
+
+-  继承自`Artist`基类的属性：
+ `.alpha`、`.animated`、`.axes`、`.clip_box`、.`.clip_on`、`.clip_path`、`.contains`、`.figure`、`.gid`、`.label`、`path_eects`、`.picker`、`.transform`、`.url`、`.visible`、`.zorder`
+- `.antialiased`或者`.aa`属性：一个布尔值。如果为`True`则表示线条是抗锯齿处理的
+- `.capstyle`属性：为`'butt' or 'round' or 'projecting'`，表示线条头端类型
+- `.color`属性：可以为`matplotlib color`，表示边线条和前景色的颜色。
+- `.edgecolor`或者`.ec`属性：可以为`matplotlib color`，表示边线条的颜色，若为`none`则表示无颜色
+- `.facecolor`或者`.fc`属性：可以为`matplotlib color`，表示前景色，若为`none`则表示无颜色
+- `.fill`属性：为布尔值。如果为`True`则填充图形，否则不填充
+- `.hatch`属性：设置`hatching pattern`，可以为下列的值：
+	- `'\'`、`'|'`、`'-'`、`'+'`、`'x'`、`'o'`、`'0'`、`'.'`、`'*'`
+- `.joinstyle`属性：可以为`'miter'、'round'、'bevel'`，表示矩形线条接头类型
+- `.linestyle`或者`.ls`属性：指定线型，可以为以下值：
+	- `'-'`或者`'solid'`：表示实线
+	- `'--'`或者`dashed`：表示虚线
+	- `'-.'`或者`dash_dot`：表示点划线
+	- `':'`或者`'dotted'`：表示点线
+	- `'None'`或者`' '`或者`''`：表示没有线条（不画线）
+- `.linewidth`或者`.lw`属性：为浮点数，表示线条宽度
+
+#### f.  Rectangle 类
+
+`matplotlib.patches.Rectangle`类是矩形类（基类是`matplotlib.patches.Patch`），其构造函数为：`Rectangle(xy,width,height,angle=0.0,**kwargs)`。
+参数为：
+
+- `xy`：矩形左下角坐标
+- `width`：矩形宽度
+- `height`：矩形高度
+- 其他关键字参数用于设置属性
+
+其属性有：
+
+-  继承自`Artist`基类的属性：
+ `.alpha`、`.animated`、`.axes`、`.clip_box`、.`.clip_on`、`.clip_path`、`.contains`、`.figure`、`.gid`、`.label`、`.picker`、`.transform`、`.url`、`.visible`、`.zorder`
+- 继承自`Patch`基类的属性：
+  `.antialiased`或者`.aa`、`.capstyle`、`.color`、`.edgecolor`或者`.ec`、`.facecolor`或者`.fc`、`.fill`、`.hatch`、`.joinstyle`、`.linestyle`或者`.ls`、`.linewidth`或者`.lw`属性
+
+#### g. Polygon类
+
+`matplotlib.patches.Polygon`类是多边形类。其基类是`matplotlib.patches.Patch`。其构造函数为：
+`Polygon(xy, closed=True, **kwargs)`。参数为：
+
+- `xy`是一个`N×2`的`numpy array`，为多边形的顶点。
+- `closed`为`True`则指定多边形将起点和终点重合从而显式关闭多边形。
+- 其他关键字参数用于设置属性
+
+`Polygon`的属性有：
+
+-  继承自`Artist`基类的属性：
+ `.alpha`、`.animated`、`.axes`、`.clip_box`、.`.clip_on`、`.clip_path`、`.contains`、`.figure`、`.gid`、`.label`、`.picker`、`.transform`、`.url`、`.visible`、`.zorder`
+- 继承自`Patch`基类的属性：
+  `.antialiased`或者`.aa`、`.capstyle`、`.color`、`.edgecolor`或者`.ec`、`.facecolor`或者`.fc`、`.fill`、`.hatch`、`.joinstyle`、`.linestyle`或者`.ls`、`.linewidth`或者`.lw`属性
+
+#### h. PolyCollection类
+
+`matplotlib.collections.PolyCollection`是多边形集合类，其基类是`matplotlib.collections._CollectionWithSizes`。它的构造函数为：
+
+`PolyCollection(verts, sizes=None, closed=True, **kwargs)`。
+
+其关键字参数为：
+
+- `verts`：一个顶点序列。每个顶点都由`xy元组`或者`xy数组`组成
+- `sizes`：一个浮点数序列，依次指定每个顶点正方形的边长。如果序列长度小于顶点长度，则循环从序列头部再开始挑选
+- `closed`：如果为`True`，则显式封闭多边形
+- `edgecolors`: `collection`的边的颜色
+- 其他关键字参数用于设置属性
+
+下面为属性：
+-  继承自`Artist`基类的属性：
+ `.alpha`、`.animated`、`.axes`、`.clip_box`、.`.clip_on`、`.clip_path`、`.contains`、`.figure`、`.gid`、`.label`、`.picker`、`.transform`、`.url`、`.visible`、`.zorder`
+- `.facecolors`: `collection`的前景色
+- `.linewidths`: `collection`的边线宽
+- `.antialiaseds`:抗锯齿属性，可以为`True`或者`False`
+- `.offsets`: 设置`collection`的偏移
+- `.norm`: 归一化对象
+- `.cmap`:`color map`
 
 ## 三、基本概念
 
@@ -256,7 +575,7 @@ matplotlib配置信息是从配置文件中读取的。在配置文件中可以�
 
 `matplotlib`的所有`plotting function`期待输入`numpy.array`或者`numpy.ma.masked_array`类型的数据作为输入。某些长得像`numpy.array`的数据比如`numpy.matrix`类型的输入数据可能会导致`matplotlib`工作异常。如果确实需要使用`numpy.matrix`，你应该首先将它转换为`numpy.array`
 
-### 2. `matplotlib`、`pyplot`、`pylab`的关系
+### 2.  matplotlib 、 pyplot 、 pylab 的关系
 
 - `matplotlib`：它是整个`package`
 - `matplotlib.pyplot`：是`matplotlib`的一个`module`。它为底层的面向对象接口提供了一个`state-machine interface`。这个`state-machine`必要的时候隐式创建`Figure`和`Axes`，并维护`current Figure`和`current Axes`
@@ -278,7 +597,7 @@ ax.show()
 
 这样的风格使得在绘图事件中，每个角色都很清楚，数据的流动也很清楚。
 
-### 4. `backend`
+### 4.  backend 
 
 `matplotlib`可以适用于非常广泛的场景：
 
@@ -305,7 +624,7 @@ ax.show()
 >
 > - 查看当前的`backend`可以用：`matplotlib.get_backend()`
 
-#### a. `rendering engine`
+#### a.  rendering engine 
 
 `matplotlib`提供的常用的`rendering engine`是`Agg`，它采用的是`Anti-Grain Geometry C++ library`。除了`macosx`之外的所有`user interface`都可以用`agg rendering`，如`WXAgg,GTKAgg,QT4Agg,TkAgg`这些`backend`。
 某些`user interface`还支持其他引擎，如`GTK`支持`Cario`引擎，如`GTKCariro backend`。 
@@ -329,7 +648,7 @@ ax.show()
 
 > 交互模式也可以通过`matplotlib.pyplot.ion()`开启交互模式，由`matplotlib.pyplot.ioff()`关闭交互模式。另外交互模式支持`ipython`和`python shell`，但是不支持`IDLE IDE`。
 
-  ![交互模式](./imgs/matplotlib/16.JPG)
+  ![交互模式](./imgs/matplotlib/interactive_mode.JPG)
 
 在交互模式下：
 
@@ -377,12 +696,12 @@ ax.show()
 - `sharex`关键字参数：指定`subplot`与其他`Axes`(由该参数值指定）共享`xaxis attribute`
 - `sharey`关键字参数：指定`subplot`是否与其他`Axes`(由该参数值指定）共享`yaxis attribute`
 
-#### c. `pyplot.subplots()`函数
+#### c.  pyplot.subplots() 函数
 
 你可以通过`pyplot.subplots()`函数一次性的创建多个`SubPlot`。
 >`pyplot.subplot()`每次只会创建一个`SubPlot`。
 
-  ![pyplot.subplots](./imgs/matplotlib/17.JPG)
+  ![pyplot.subplots](./imgs/matplotlib/pyplot_subplots.JPG)
 
 其参数有：
 
@@ -396,11 +715,11 @@ ax.show()
 	- 如果为字符串`row`，则每一行的`SubPlot`共享一个`X`轴（与`False`等效）
 	- 如果为字符串`col`，则每一列的`SubPlot`共享一个`X`轴（与`True`等效）
 
-  ![pyplot.subplots(sharex=True)](./imgs/matplotlib/18.JPG)
+  ![pyplot.subplots(sharex=True)](./imgs/matplotlib/pyplot_subplots_sharex.JPG)
 
-  ![pyplot.subplots(sharex='row')](./imgs/matplotlib/19.JPG)
+  ![pyplot.subplots(sharex='row')](./imgs/matplotlib/pyplot_subplots_sharey.JPG)
 
-  ![pyplot.subplots(sharex='col')](./imgs/matplotlib/20.JPG)
+  ![pyplot.subplots(sharex='col')](./imgs/matplotlib/pyplot_subplots_sharexy.JPG)
 
 - `sharey`：
 	- 如果为`True`，则所有`SubPlot`的`Y axis`被共享。此时只有第一列的`Y`轴可见。
@@ -421,16 +740,16 @@ ax.show()
 
 其返回值为`figure,ax`。其中`figure`是一个`Figure`对象；`ax`取决于`squeeze`参数。
 
-### 2. 使用`pyplot.subplot2grid()`函数
+### 2. 使用 pyplot.subplot2grid() 函数
 
 使用`pyplot.subplot2grid()`函数时，你只需要提供网格形状以及`SubPlot`位置即可，如：
 `ax=pyplot.subplot2grid((2,2),(0,0))`，它等价于`ax=pyplot.subplot(2,2,1)`。其中`subplot2grid()`的位置坐标从0开始。
 
 `subplot2grid()`支持`SubPlot`横跨或者纵跨多个单元格。`colspan`关键字参数指定纵向的跨度；`rowspan`guan尖子参数指定横向的跨度。
 
-![pyplot.subplot2grid()](./imgs/matplotlib/21.JPG)
+![pyplot.subplot2grid()](./imgs/matplotlib/pyplot_subplot2grid.JPG)
 
-### 3. 使用`GridSpec`和`SubplotSpec`
+### 3. 使用 GridSpec 和 SubplotSpec 
 
 你可以直接创建`matplotlib.gridspec.GridSpec`然后通过它来创建`SubPlot`。如：
 
@@ -443,9 +762,9 @@ matplotlib.pyplot.subplot(gs[0,0])
 
 `GridSpec`对对象提供了类似`array`的索引方法，其索引的结果是一个`SubplotSpec`对象实例。如果你想创建横跨多个网格的`SubplotSpec`，那么你需要对`GridSpec`对象执行分片索引，如`pyplot.subplot(gs[0,:-1])`。
 
-  ![使用`GridSpec`和`SubplotSpec`](./imgs/matplotlib/22.JPG)
+  ![使用`GridSpec`和`SubplotSpec`](./imgs/matplotlib/GridSpec.JPG)
 
-#### a. 调整`GridSpec layout`
+#### a. 调整 GridSpec layout 
 
 如果你使用`GridSpec`，那么你可以调整由`GridSpec`创建的`SubplotSpec`的`layout parameter`。如：
 
@@ -463,7 +782,7 @@ gs.update(left=0.05,right=0.48,wspace=0.05)
 - `wspace`关键字参数：`subplot`之间的空白宽度
 - `hspace`关键字参数：`subplot`之间的空白的高度
 
-#### b. 从`SubplotSpec`创建`GridSpec`：
+#### b. 从 SubplotSpec 创建 GridSpec ：
 
 你可以从`SubplotSpec`创建`GridSpec`。此时`layout parameter`由该`SubplotSpec`指定。如：
 
@@ -475,9 +794,9 @@ gs00=gridspec.GridSpecFromSubplotSpec(3,3,subplot_spec=gs0[0])
 `matplotlib.gridspec.GridSpecFromSubplotSpec(nrows, ncols, subplot_spec,
 wspace=None, hspace=None,height_ratios=None,width_ratios=None)`：创建一个`GridSpec`，它的`subplot layout parameter`继承自指定的`SubplotSpec`。其中`nrows`为网格行数，`ncols`为网格列数，`subplot_spec`为指定的`SubplotSpec`。
 
-  ![从`SubplotSpec`创建`GridSpec`](./imgs/matplotlib/23.JPG)
+  ![从`SubplotSpec`创建`GridSpec`](./imgs/matplotlib/GridSpec_from_SubplotSpec.JPG)
 
-#### c. 创建不同大小的`GridSpec`网格
+#### c. 创建不同大小的 GridSpec 网格
 
 默认情况下，`GridSpec`创建的网格都是相同大小的。当然你可以调整相对的高度和宽度。注意这里只有相对大小（即比例）是有意义的，绝对大小值是没有意义的。如：
 
@@ -490,9 +809,9 @@ plt.subplot(gs[0]
 这里`width_ratios`关键字参数指定了一行中，各列的宽度比例（有多少列就有多少个数字）；
 `height_ratios`关键字参数指定了一列中，各行的高度比例（有多少行就有多少个数字）。
 
-  ![从`SubplotSpec`创建`GridSpec`](./imgs/matplotlib/24.JPG)
+  ![不同大小的`GridSpec`网格](./imgs/matplotlib/GridSpec_different_size.JPG)
 
-#### d. `GridSpec.tight_layout()`
+#### d.  GridSpec.tight_layout() 
 
 `GridSpec.tight_layout(fig, renderer=None, pad=1.08, h_pad=None, w_pad=None, rect=None)`:`tight_layout`能够自动调整`subplot param`从而使得`subplot`适应`figure area`。它仅仅检查`ticklabel、axis label、title`等内容是否超出绘制区域。其参数为：
 
@@ -504,9 +823,9 @@ plt.subplot(gs[0]
 
 当然你可以使用`matplotlib.pyplot.tight_layout()`来达到同样的效果。
 
-  ![`GridSpec.tight_layout()`](./imgs/matplotlib/25.JPG)
+  ![`GridSpec.tight_layout()`](./imgs/matplotlib/tight_layout.JPG)
 
-## 五、 `Path`
+## 五、  Path 
 
 `matplotlib.patch`对象底层的对象就是`Path`。它的基本用法如下：
 
@@ -536,9 +855,9 @@ ax.set_xlim(-2,2)
 ax.set_ylim(-2,2)
 plt.show()
 ```
-  ![`Path`](./imgs/matplotlib/26.JPG)
+  ![`Path`](./imgs/matplotlib/Path.JPG)
 
-### 1. 创建和使用`PATH`
+### 1. 创建和使用 PATH 
 
 `PATH`对象的创建通过`matplotlib.path.Path(verts,codes)`创建，其中：
 
@@ -556,9 +875,9 @@ plt.show()
 
 可以通过`matplotlib.patches.PathPatch(path)`来构建一个`PathPatch`对象，然后通过`Axes.add_patch(patch)`向`Axes`添加`PathPatch`对象.这样就添加了`Path`到图表中。
 
-  ![贝塞尔曲线](./imgs/matplotlib/27.JPG)
+  ![贝塞尔曲线](./imgs/matplotlib/bezier_path.JPG)
 
-### 2. `Compound Path`
+### 2.  Compound Path 
 
 在`matplotlib`中所有简单的`patch primitive`，如`Rectangle`、`Circle`、`Polygon`等等，都是由简单的`Path`来实现的。而创建大量的`primitive`的函数如`hist()`和`bar()`（他们创建了大量的`Rectanle`）可以使用一个`compound path`来高效地实现。
 > 但是实际上`bar()`创建的是一系列的`Rectangle`，而没有用到`compound path`，这是由于历史原因，是历史遗留问题。（`bar()`函数先于`Coupound Path`出现）
@@ -584,7 +903,7 @@ ax.add_patch(patch)
 ax.show()
 ```
 
-## 六、`path effect`
+## 六、 path effect 
 
 `matplotlib`的`patheffects`模块提供了一些函数来绘制`path effect`，该模块还定义了很多`effect`类。可以应用`path effect`的`Artist`有：`Patch`、`Line2D`、`Collection`以及`Text`。每个`Artist`的`path effect`可以通过`.set_path_effects()`方法控制，其参数是一个可迭代对象，迭代的结果是`AbstractPathEffect`实例；也可以通过`Artist`构造函数的`path_effects=`关键字参数控制。
 
@@ -594,7 +913,7 @@ ax.show()
 
 `AbstractPathEffect`类的构造函数有个`offset`关键字参数，表示`effect`偏移(默认为`(0,0)`)
 
-### 1. `normal effect`
+### 1.  normal effect 
 
 最简单的`effect`是`normal effect`，它是`matplotlib.patheffects.Normal`类。它简单的绘制`Artist`，不带任何`effect`。
 
@@ -610,26 +929,26 @@ text.set_path_effects([path_effects.Normal()])
 plt.show()
 ```
 
-  ![`normal effect`](./imgs/matplotlib/28.JPG)
+  ![`normal effect`](./imgs/matplotlib/normal_effect.JPG)
 
-### 2. `drop-shadow effect`
+### 2.  drop-shadow effect 
 
 我们可以在基于`Path`的`Artist`上应用`drop-shadow effect`（下沉效果）。如可以在`filled patch Artist`上应用`matplotlib.patheffects.SimplePatchShadow`，在`line patch Artist`上应用`matplotlib.patheffects.SimpleLineShadow`。
 
-  ![`drop-shadow effect`](./imgs/matplotlib/29.JPG)
+  ![`drop-shadow effect`](./imgs/matplotlib/drop_shadow_effect.JPG)
 
 你可以通过`path_effects=[path_effects.with*()]`来指定`path_effects`参数，或者直接通过`path_effects=[path_effects.SimpleLineShadow(),path_effects.Normal()]`来指定`path_effects`参数。
 
 - 前者会自动地在`normal effect`后跟随指定的`effect`
 - 后者会显式的指定`effect`
 
-### 3. `stand-out effect`
+### 3.  stand-out effect 
 
 `Strok effect`可以用于制作出`stand-out effect`（突出效果）。
 
- ![`stand-out effect`](./imgs/matplotlib/30.JPG)
+ ![`stand-out effect`](./imgs/matplotlib/stand_out_effect.JPG)
 
-### 4. 通用`PathPatchEffect`
+### 4. 通用 PathPatchEffect 
 
 `PathPatchEffect`是一个通用的`path effect`类。如果对某个`PathPatch`设置了`PathPatchEffect`，则该`effect`的`.draw_path(...)`方法执行的是由初始`PathPatch`计算的得到的一个新的`PathPatch`。
 
@@ -646,7 +965,7 @@ path_effects.PathPatchEffect(edgecolor='white', linewidth=1.1,
 facecolor='black')])
 plt.show()
 ```
- ![`PathPatchEffect`](./imgs/matplotlib/31.JPG)
+ ![`PathPatchEffect`](./imgs/matplotlib/PathPatchEffect.JPG)
 
 ## 七、坐标变换
 
@@ -663,7 +982,7 @@ plt.show()
 
 > 通常不建议直接使用`display`坐标系。因为它固定了绝对坐标，导致你`resize`图表时你必须重新定位坐标。所以你必须监听`resize`事件，非常麻烦。
 
-### 1. 用户的`data`坐标系
+### 1. 用户的 data 坐标系
 
 当调用`ax.set_xlimit(x_min,x_max)`以及`ax.set_ylimit(y_min,y_max)`时，即建立起了用户`data`坐标系。左下角坐标为`(x_min,y_min)`，右上角坐标为`(x_max,y_max)`。
 > 有时候你可能并没有显式调用`.set_xlimit()`以及`.set_ylimit()`。其实`matplotlib`会隐式调用它们来设置坐标轴的数据范围。
@@ -684,9 +1003,9 @@ ax.transData.transform((5, 0))
 
 当你调用了`ax.set_xlim()`或者`ax.set_ylim()`时，坐标转换对象会实时更新。
 
-  ![用户的`data`坐标系](./imgs/matplotlib/37.JPG)
+  ![用户的`data`坐标系](./imgs/matplotlib/data_transform.JPG)
 
-### 2. `Axes`坐标系
+### 2.  Axes 坐标系
 
 在`Axes`坐标系中，`(0,0)`位于`Axes`的左下角，`(1,1)`位于`Axes`的右上角，`(0.5,0.5)`位于`Axes`的中心。当然你可以引用位于这之外的点，如`(-0.1,1.1)`。
 
@@ -699,7 +1018,7 @@ ax.transData.transform((5, 0))
 有时候你需要混合`data`坐标系和`Axes`坐标系。通过`matplotlib.transforms.blended_transform_factory(
 ax.transData, ax.transAxes)`能够返回一个混合坐标系，该坐标系中：`x`坐标为`data`坐标系，`y`坐标为`Axes`坐标系。因此该坐标系中`(1,1)`表示的是`data`坐标系中`x=1`但是`y`位于最上方的点。
 
-  ![混合坐标系](./imgs/matplotlib/38.JPG)
+  ![混合坐标系](./imgs/matplotlib/blended_transform.JPG)
 
 有两个函数返回特定的混合坐标系：
 
@@ -719,7 +1038,7 @@ ax.transData, ax.transAxes)`能够返回一个混合坐标系，该坐标系中�
 - 制作阴影的时候，将阴影的`zorder`调小，从而使得阴影首先绘制并位于底层
 - 当`scale_trans`为`fig.dpi_scale_trans`坐标转换对象时，`xt`,`yt`的单位是像素。还有一个方法也能达到同样的效果：`matplotlib.transforms.offset_copy(trans,x=xt,y=yt,units='inches')`，但是该方法返回的坐标转换对象是`trans`合成了偏移之后的效果。
 
-  ![制造阴影效果](./imgs/matplotlib/39.JPG)
+  ![制造阴影效果](./imgs/matplotlib/transform_make_shadow_effect.JPG)
 
 ### 5. 直角坐标系、对数坐标系、极坐标系
 
@@ -734,14 +1053,14 @@ ax.transData, ax.transAxes)`能够返回一个混合坐标系，该坐标系中�
 
 你也可以通过`matplotlib.pyplot.xscale()`和`matplotlib.pyplot.yscale()`来设置对数坐标。一定要先添加数据后设置对数坐标。
 
-  ![对数坐标](./imgs/matplotlib/40.JPG)
+  ![对数坐标](./imgs/matplotlib/log_coorinate.JPG)
 
 #### b. 设置极坐标
 
 通过`Figure.add_axes((left,bottom,width,height), projection='polar')`或者`Figure.add_axes((left,bottom,width,height), polar=True)`方法可以创建一个极坐标的`Axes`。其中`polar`关键字是为了兼容旧代码，新代码推荐用`projection`关键字，因为`projection`关键字不仅可以设置极坐标，还可以设置自定义坐标（它将坐标统一为映射关系）。
 >`Figure.add_subplot(...)`也是同样的设置
 
-  ![级坐标](./imgs/matplotlib/41.JPG)
+  ![级坐标](./imgs/matplotlib/polar_coordinate.JPG)
 
 ## 八、技巧
 
@@ -751,9 +1070,9 @@ ax.transData, ax.transAxes)`能够返回一个混合坐标系，该坐标系中�
 
 共享轴线时，当你缩放某个`Axes`时，另一个`Axes`也跟着缩放。
 
-  ![共享坐标轴](./imgs/matplotlib/32.JPG)
+  ![共享坐标轴](./imgs/matplotlib/share_axis.JPG)
 
-### 2. 创建多个`subplot`
+### 2. 创建多个 subplot 
 
 如果你想创建网格中的许多`subplot`，旧式风格的代码非常繁琐：
 
@@ -797,9 +1116,9 @@ ax4=axs[1,1]
 
 你也可以调整X轴的显示格式。当X轴为时间时，其显示由`Axes.fmt_xdata`属性来提供。该属性是一个函数对象或者函数，接受一个日期参数，返回该日期的显示字符串。`matplotlib`已经提供了许多`date formatter`，你可以直接使用`ax.fmt_xdata=matplotlib.dates.DateFormatter('%Y-%m-%d')`
 
-  ![日期显示](./imgs/matplotlib/33.JPG)
+  ![日期显示](./imgs/matplotlib/axis_date_adjust.JPG)
 
-### 4. `fill_between()`
+### 4.  fill_between() 
 
 `Axes.fill_between(x,y1,y2=0,where=None,interpolate=False,step=None,**kwargs)`方法在`y1`和`y2`之间进行填充。
 
@@ -844,21 +1163,46 @@ ax.set_ylabel('position')
 ax.grid()  #开启网格
 ```
 
-  ![`fill_between()`](./imgs/matplotlib/34.JPG)
+  ![`fill_between()`](./imgs/matplotlib/fill_between.JPG)
 
-### 5. 设置透明`legend`
+### 5. 设置透明 legend 
 
 通常如果你能确定，比如右上角，没有数据，那么你能够非常安全的将`legend`放置在右上角从而不会遮盖你的图表，如`ax.legend(loc='upper right')`。如果你不知道你的数据曲线的样子，那么你可以使用`ax.legend(loc='best')`让`matplotlib`自动选择将`legend`放置在何处。
 
 更有效的方法是设置`legend`为透明。方法为：`ax.legend(loc='best',fancybox=True,framealpha=0.5)`。
 其中`fancybox`设置`legend`边框为圆角矩形，`framealpha`设置`legend`的透明度。
 
-  ![`fill_between()`](./imgs/matplotlib/35.JPG)
+  ![`fill_between()`](./imgs/matplotlib/legend_alpha.JPG)
 
-### 6. 放置 `text box`
+### 6. 放置 text box 
 
 当你在`Axes`中放置`text box`时，你最好将它放置在`axes coordinates`下，这样当你调整X轴或者Y轴时，它能够自动调整位置。
 
 你也可以使用`Text`的`.bbox`属性来让这个`Text`始终放在某个`Patch`中。其中`.bbox`是个字典，它存放的是该`Patch`实例的属性。
 
-  ![`fill_between()`](./imgs/matplotlib/36.JPG)
+  ![`fill_between()`](./imgs/matplotlib/text_box.JPG) 
+
+### 7. LATEX文字
+
+要想在文本中使用`LATEX`，你需要使用`'$...$'`这种字符串（即使用`'$'`作为界定符）。通常建议使用`raw`字符串，即`r'$...$'`的格式，因为原生字符串不会转义`'\'`，从而使得大量的`LATEX`词法能够正确解析。
+
+### 8. 平移坐标轴：
+
+`Axes.spines`是个字典，它存放了四个键，分别为： `Axes.spines['left],Axes.spines['right],Axes.spines['top],Axes.spines['bottom]`
+他们都是一个`matplotlib.spines.Spine`对象，该对象继承自`matplotlib.patches.Patch`对象，主要是设置图形边界的边框。
+
+- `Spine.set_color('none')`：不显示这条边线
+- `Spine.set_position((position)))`：将边线移动到指定坐标，其中`position`是一个二元元组，指定了 `(position type,amount)`，`position type`可以是：
+	- `outward`：在绘图区域之外放置边线，离开绘图区域的距离由 `amount`指定（负值则在会去区域内绘制）
+	- `axes`：在 `Axes coordinate`内放置边线（从 0.0 到 1.0 ）
+	- `data`：在 `data coordinate` 内放置边线
+	
+	你也可以指定`position`为 ： `'center'`，等价于  `('axes',0.5)`；或者 `'zero'`，等价于 `('data',0.0)`
+
+
+### 9. 设置轴线 tick 
+
+`Axes.xaxis`返回一个`matplotlib.axis.XAxis`对象，`Axes.yaxis`返回一个`matplotlib.axis.YAxis`对象，他们都是 `matplotlib.axis.Axis`的子类对象，代表轴线。
+
+- `Axis.set_ticks_position`：设置 `tick` 位置，可以为：` 'top' | 'bottom' | 'both' | 'default' | 'none'`，如果为 `'None'`则不显示 `tick`
+- `Axis.set_label_position`：设置`label`位置，可以为：` 'top'| 'bottom'`

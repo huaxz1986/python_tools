@@ -4,7 +4,6 @@
 **  本文档可用于个人学习目的，不得用于商业目的  **
 -->
 # Beautiful Soup 笔记（基于`BeautifulSoup 4.4.1`）
-
 `BeautifulSoup`是从HTML或者XML中提取数据的Python库。目前`Beautiful Soup 3`已经停止开发,推荐在现在的项目中使用`Beautiful Soup 4`, 安装的命令为`pip install beautifulsoup4`。
 > 如果执行命令`pip install beautifulsoup`则安装的是`Beautiful Soup 3`
 
@@ -25,7 +24,7 @@
 
 > `markup`为待解析的字符串或者一个文件对象。文档首先被转换成字符串，并且所有的`HTML Entity`都被转义处理。
 
-  ![使用解析器](./imgs/beautifulsoup/1.JPG)
+  ![使用解析器](./imgs/beautifulsoup/use_parser.JPG)
 
 #### a.解析器之间的区别
 
@@ -43,7 +42,7 @@
 
 `Tag`对象与XML或者HTML原生文档中的`tag`相同，就是HTML中的标签。
 
-  ![Tag对象](./imgs/beautifulsoup/2.JPG)
+  ![Tag对象](./imgs/beautifulsoup/Tag.JPG)
 
 `Tag`对象有两个最重要的属性：`name`和`attrs`属性：
 
@@ -56,7 +55,7 @@ HTML标签中对于`class`等属性，它可能有多个值，那么`Tag`对象�
 
 将`Tag`对象转换成字符串时，多个值属性会合成为一个值，而不是对一个列表执行`str()`。
 
-  ![Tag对象](./imgs/beautifulsoup/3.JPG)
+  ![Tag属性](./imgs/beautifulsoup/Tag_attribute.JPG)
 
 ### 2. `NavigableString`对象
 `NavigableString`对象表示标签包围的HTML文字内容，通过`Tag`对象的`.string`属性可获得对应的`NavigableString`对象。
@@ -66,13 +65,13 @@ HTML标签中对于`class`等属性，它可能有多个值，那么`Tag`对象�
 
 如果想在`BeautifulSoup`之外使用`NavigableString`对象，则建议调用`str()`方法将它转换成普通的字符串，否则会浪费内存。
 
-  ![NavigableString对象](./imgs/beautifulsoup/4.JPG)
+  ![NavigableString对象](./imgs/beautifulsoup/NavigableString.JPG)
 
 ### 3. `BeautifulSoup`对象
 
 `BeautifulSoup`对象表示的是一个文档的全部内容。大部分时候可以将它视为`Tag`对象进行遍历。但是它的`.name`属性固定为`'[document]'`，且`.attrs`属性为空。
 
-  ![BeautifulSoup对象](./imgs/beautifulsoup/5.JPG)
+  ![BeautifulSoup对象](./imgs/beautifulsoup/BeautifulSoup.JPG)
 
 ### 4. `Comment`对象以及其他特殊对象
 
@@ -80,7 +79,7 @@ HTML标签中对于`class`等属性，它可能有多个值，那么`Tag`对象�
 
 `CData`、`ProcessingInstruction`、`Declaration`、`Doctype`与` Comment` 对象类似，他们都是 `NavigableString` 的子类，只是都有各自的格式化输出方式。
 
-  ![Comment对象](./imgs/beautifulsoup/6.JPG)
+  ![Comment对象](./imgs/beautifulsoup/Comment.JPG)
 
 ## 三、遍历文档树
 
@@ -95,7 +94,7 @@ HTML标签中对于`class`等属性，它可能有多个值，那么`Tag`对象�
 - 通过`soup.a`获得的只是标签`<a></a>`的第一个标签。要像获取所有的`<a></a>`标签，必须用`find_all()`等方法
 - 可以如果想获取标签中的子标签，则可以反复使用`.`表达式，如:`soup.head.body.a`。
 
- ![通过`Tag`的名字遍历](./imgs/beautifulsoup/7.JPG)
+ ![通过`Tag`的名字遍历](./imgs/beautifulsoup/iterate_with_Tag_name.JPG)
 
 #### b. 通过`Tag.contents`和`Tag.children`遍历
 
@@ -105,7 +104,7 @@ HTML标签中对于`class`等属性，它可能有多个值，那么`Tag`对象�
 - `NavigableString`对象不能按照这种方式遍历。因为它没有子节点。
 	>哪怕提供给`BeautifulSoup`构造函数的字符串并没有`<html></html>`标签，`BeautifulSoup`也会自动构造出`<html></html>`标签。
 
-  ![通过`Tag.contents`和`Tag.children`遍历](./imgs/beautifulsoup/8.JPG)
+  ![通过`Tag.contents`和`Tag.children`遍历](./imgs/beautifulsoup/iterate_wit_Tag_children_or_contents.JPG)
 
 #### c. 通过`Tag.descendants`遍历
 
@@ -115,7 +114,7 @@ HTML标签中对于`class`等属性，它可能有多个值，那么`Tag`对象�
 - `BeautifulSoup`对象也可以按照这种方式进行遍历。因为`BeautifulSoup`对象一定会包含子节点，如`<html>`标签。
 - `NavigableString`对象不能按照这种方式遍历。因为它没有子节点。
 
-  ![通过`Tag.descendants`遍历](./imgs/beautifulsoup/9.JPG)
+  ![通过`Tag.descendants`遍历](./imgs/beautifulsoup/iterate_wit_Tag_descendtans.JPG)
 
 #### d. 通过`Tag.string`遍历
 
@@ -128,7 +127,7 @@ HTML标签中对于`class`等属性，它可能有多个值，那么`Tag`对象�
 	  如`<html>`标签。
 	>- `NavigableString`对象不能按照这种方式遍历。因为它没有子节点。
 
-  ![通过`Tag.string`遍历](./imgs/beautifulsoup/10.JPG)
+  ![通过`Tag.string`遍历](./imgs/beautifulsoup/iterate_wit_Tag_string.JPG)
 
 #### e. 通过`Tag.strings` 和 `Tag.stripped_strings`遍历
 
@@ -139,7 +138,7 @@ HTML标签中对于`class`等属性，它可能有多个值，那么`Tag`对象�
 - `BeautifulSoup`对象也可以按照这种方式进行遍历。因为`BeautifulSoup`对象一定会包含子节点，如`<html>`标签。
 - `NavigableString`对象不能按照这种方式遍历。因为它没有子节点。
 
-  ![通过`Tag.strings` 和 `Tag.stripped_strings`遍历](./imgs/beautifulsoup/11.JPG)
+  ![通过`Tag.strings` 和 `Tag.stripped_strings`遍历](./imgs/beautifulsoup/iterate_wit_Tag_strings.JPG)
 
 ### 2.父节点
 
@@ -152,13 +151,13 @@ HTML标签中对于`class`等属性，它可能有多个值，那么`Tag`对象�
 - 文档的顶层节点，如`<html>`的父节点是`BeautifulSoup`对象
 - `BeautifulSoup`对象的父节点是`None`
 
-  ![通过`Tag.parent`遍历](./imgs/beautifulsoup/12.JPG)
+  ![通过`Tag.parent`遍历](./imgs/beautifulsoup/iterate_wit_Tag_parent.JPG)
 
 #### b. 通过`.parents`访问节点
 
 通过`Tag.parents`和`NavigableString.parents`可以递归得到元素的所有父辈节点。该属性返回的是一个生成器对象。
 
-  ![通过`Tag.parents`遍历](./imgs/beautifulsoup/13.JPG)
+  ![通过`Tag.parents`遍历](./imgs/beautifulsoup/iterate_wit_Tag_parents.JPG)
 
 ### 3. 兄弟节点
 
@@ -175,7 +174,7 @@ HTML标签中对于`class`等属性，它可能有多个值，那么`Tag`对象�
 
 在文档树中可以通过`Tag.previous_siblings`或者`NavigableString.previous_siblings`来迭代本节点前面的兄弟节点；通过`Tag.next_siblings`者`NavigableString.next_siblings`来迭代本节点后面的兄弟节点。它们都是生成器对象。
 
-  ![访问兄弟节点](./imgs/beautifulsoup/14.JPG)
+  ![访问兄弟节点](./imgs/beautifulsoup/iterate_wit_Tag_sibling.JPG)
 
 ### 4. 回退和前进
 
@@ -211,7 +210,7 @@ HTML 解析器将这段字符串转换成一连串的事件：
 
 在文档树中可以通过`Tag.previous_elements`或者`NavigableString.previous_elements`来迭代本节点前面解析的节点；通过`Tag.next_elements`者`NavigableString.next_elements`来迭代本节点后面解析的节点。它们都是生成器对象。
 
-  ![访问前后解析的节点](./imgs/beautifulsoup/15.JPG)
+  ![访问前后解析的节点](./imgs/beautifulsoup/iterate_wit_Tag_pre_next_element.JPG)
 
 
 ## 四、搜索文档树
@@ -244,7 +243,7 @@ HTML 解析器将这段字符串转换成一连串的事件：
 你可以自定义一个方法，该方法只接受一个元素参数。如果这个方法返回`True`，则表示当前元素匹配并且被找到。
 如果该方法返回`False`，则表示不匹配。	
 
-  ![过滤器](./imgs/beautifulsoup/16.JPG)
+  ![过滤器](./imgs/beautifulsoup/filter.JPG)
 
 ### 2. `find_all()`方法
 
@@ -282,7 +281,7 @@ HTML 解析器将这段字符串转换成一连串的事件：
 - `soup('a')` 等价于 `soup.find_all('a')`
 - `tag('a')` 等价于 `tag.find_all('a')`
 
-  ![find_all()方法](./imgs/beautifulsoup/17.JPG)
+  ![find_all()方法](./imgs/beautifulsoup/find_all.JPG)
 
 ### 3. `find()`方法：
 
@@ -293,7 +292,7 @@ HTML 解析器将这段字符串转换成一连串的事件：
 
 对于`soup.head.title`这种就是多次调用`find()`方法的简写。
 
-  ![find()方法](./imgs/beautifulsoup/18.JPG)
+  ![find()方法](./imgs/beautifulsoup/find.JPG)
 
 ### 4. 其他搜索`find*()`方法
 
@@ -324,7 +323,7 @@ HTML 解析器将这段字符串转换成一连串的事件：
 
 > `find_all( name , attrs , recursive , text , **kwargs )`与`find( name , attrs , recursive , text , **kwargs )`只在当前节点的子孙结点中搜索（注意并不搜索本节点本身）。
 
-  ![其他find*()方法](./imgs/beautifulsoup/19.JPG)
+  ![其他find*()方法](./imgs/beautifulsoup/other_finds.JPG)
 
 ### 5. CSS选择器
 
@@ -627,7 +626,7 @@ tag['class']='new_cls'#修改class属性
 tag['id']='new_id'  #修改ID属性
 ```
 
-  ![修改`Tag`名字和属性](./imgs/beautifulsoup/20.JPG)
+  ![修改`Tag`名字和属性](./imgs/beautifulsoup/change_Tag_attribute.JPG)
 
 ### 2. 修改 `Tag.string`
 
@@ -637,7 +636,7 @@ tag['id']='new_id'  #修改ID属性
 >`NavigableString`也有一个`.string`属性，它是一个`str`类型，代表了该`NavigableString`存储的字符串。
 > 但是这个属性是只读的。无法通过`NavigableString.string`的赋值来修改这个属性值。
 
-  ![修改`Tag.string`](./imgs/beautifulsoup/21.JPG)
+  ![修改`Tag.string`](./imgs/beautifulsoup/change_Tag_string.JPG)
 
 ### 3. 添加内容 `Tag.append()`
 
@@ -647,7 +646,7 @@ tag['id']='new_id'  #修改ID属性
 - 如果添加的字符串含有`HTML`标记，则将该标记转义然后初始化成`NavigableString`对象，
   并不是将字符串解析成`Tag`结点。
 
-  ![修改`Tag.appned()`](./imgs/beautifulsoup/22.JPG)
+  ![修改`Tag.appned()`](./imgs/beautifulsoup/Tag_append.JPG)
 
 > `.append()`的原理就是在`.contents`列表末尾添加元素。但是由于`NavigableString`并没有`.contents`属性，因此并不能执行`NavigableString.append()`。
 
@@ -667,14 +666,14 @@ tag['id']='new_id'  #修改ID属性
 
 > `.insert()`的原理就是在`.contents`列表指定位置添加元素。但是由于`NavigableString`并没有`.contents`属性，因此并不能执行`NavigableString.insert()`。
 
-  ![插入内容](./imgs/beautifulsoup/23.JPG)
+  ![插入内容](./imgs/beautifulsoup/Tag_insert.JPG)
 
 ### 6. 清除内容
 
 `Tag.clear()`会清除当前的`Tag`内容。（也就是清除了所有的子节点）
 > `NavigableString`并没有`.clear()`方法
 
-  ![清除内容](./imgs/beautifulsoup/24.JPG)
+  ![清除内容](./imgs/beautifulsoup/Tag_clear.JPG)
 
 ### 7. 移除节点
 
@@ -682,13 +681,13 @@ tag['id']='new_id'  #修改ID属性
 - `Tag.decompose()`将本`Tag`移除文档树并销毁本节点（并不返回本节点）。
 	> `NavigableString`并没有`.decompose()`方法
 
-  ![移除节点](./imgs/beautifulsoup/25.JPG)
+  ![移除节点](./imgs/beautifulsoup/Tag_remove.JPG)
 
 ### 8. 替换节点
 
 `Tag.replace_with()`或者`NavigableString.replace_with()`方法从文档树中移除本节点并用新的`Tag`或者`NavigableString`替代，它返回被替代的旧结点。
 
-  ![替换节点](./imgs/beautifulsoup/26.JPG)
+  ![替换节点](./imgs/beautifulsoup/Tag_replace.JPG)
 
 ### 9. 包装与反包装节点
 
@@ -696,7 +695,7 @@ tag['id']='new_id'  #修改ID属性
 - `Tag.unwrap()`方法与`.wrap()`相反，它移除`Tag`的标签，如`<b>xxx</b>`经过`.unwrap()`之后变成`xxx`。
 	> `NavigableString`没有`.unwrap()`方法
 
-  ![包装与反包装节点](./imgs/beautifulsoup/27.JPG)
+  ![包装与反包装节点](./imgs/beautifulsoup/Tag_wrap.JPG)
 
 ## 六、输出
 
@@ -719,7 +718,7 @@ tag['id']='new_id'  #修改ID属性
 - 可以使用`.stripped_string`生成器，获取文本列表之后手动处理列表，
   如`[text for text in soup.stripped_strings]`
 
-  ![获取文本](./imgs/beautifulsoup/28.JPG)
+  ![获取文本](./imgs/beautifulsoup/Tag_get_text.JPG)
 
 ## 七、编码
 
@@ -731,7 +730,7 @@ tag['id']='new_id'  #修改ID属性
 
 "编码自动检测"大部分都能猜对编码格式，但是有时候会猜错。即使猜测正确，也是效率很慢。如果预先知道文档编码，可以设置编码参数来减少自动检测编码出错的概率并且提高文档解析速度。通过给`BeautifulSoup`构造函数提供`from_encoding`关键字参数达到目的：`soup=BeautifulSoup(html_doc,from_encoding='utf-8')`
 
-  ![编码自动检测](./imgs/beautifulsoup/29.JPG)
+  ![编码自动检测](./imgs/beautifulsoup/codec_detect.JPG)
 
 #### a. 独立使用编码自动检测
 
@@ -744,10 +743,10 @@ print(dammit.unicode_markup) #编码后的字符串
 dammit.original_encoding #编码
 ```
 
-- 如果事先猜测一些可能的编码，那么可以将这些编码列表作为`UniocdeDammit`的构造参数。此时`UnicodeDammit`会优先检测这些编码。
+- 如果事先猜测一些可能的编码，那么可以将这些编码列表作为`UnicodeDammit`的构造参数。此时`UnicodeDammit`会优先检测这些编码。
 - 如果Python中安装了`chardet`或者`cchardet`，那么编码检测功能的准确率会大大提高
 
-  ![单独使用编码自动检测](./imgs/beautifulsoup/30.JPG)
+  ![单独使用编码自动检测](./imgs/beautifulsoup/UnicodeDammit.JPG)
 
 #### b. 混合编码
 
@@ -759,7 +758,7 @@ new_doc=UnicodeDammit.detwingle(doc)
 print(new_doc.decode('utf8')
 ```
 
-  ![混合编码的解码](./imgs/beautifulsoup/31.JPG)
+  ![混合编码的解码](./imgs/beautifulsoup/UnicodeDammit_detwingle.JPG)
 
 ### 2. `Beautifulsoup.contains_replacement_characters`
 
@@ -786,7 +785,7 @@ print(new_doc.decode('utf8')
 `SoupStrainer`类的构造时，它接受的参数与典型的`BeautifulSoup.find_all()`方法相同的参数，包括：
 `name`、`attrs`、`recursive`、`text`、`**kwargs`等。
 
-  ![部分解析](./imgs/beautifulsoup/32.JPG)
+  ![部分解析](./imgs/beautifulsoup/part_parse.JPG)
 
 ## 八、常见问题
 
@@ -794,7 +793,7 @@ print(new_doc.decode('utf8')
 
 如果想知道`BeautifulSoup`如何解析一份文档，可以用`bs4.diagnose.diagnose(htmldoc)`方法来查看。该方法会输出一份报告，说明不同的解析器会怎样处理这段文档，并标出当前的解析过程会使用哪种解析器。
 
-  ![解析诊断](./imgs/beautifulsoup/33.JPG)
+  ![解析诊断](./imgs/beautifulsoup/diagnose.JPG)
 
 ### 2. 文档解析错误
 

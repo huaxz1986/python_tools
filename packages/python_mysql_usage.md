@@ -1,3 +1,8 @@
+<!--
+    作者：华校专
+    email: huaxz1986@163.com
+**  本文档可用于个人学习目的，不得用于商业目的  **
+-->
 # mysql-connector-python 使用笔记 （基于2.0.4）
 
 mysql-connector-python 是 Oracle 官方推出的`mysql`的`python connector`，下载地址可以从

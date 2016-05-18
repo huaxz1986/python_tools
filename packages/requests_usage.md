@@ -20,7 +20,7 @@
 
 这些函数的返回值都是一个`Response`对象，这个对象中存放着我们所想要的信息。
 
-  ![发送请求](./imgs/requests/1.JPG)
+  ![发送请求](./imgs/requests/send_request.JPG)
 
 > `r=requests.options(url)`会返回服务器支持那些HTTP请求类型。这些请求类型在`r.headers['allow']`中查看。
 
@@ -30,7 +30,7 @@
 通过打印输出`Response`对象的`url`属性，你可以看到URL正确解码。
 > `params`字典里如果有值为`None`，则对应的键不会添加到URL的查询字符串里。
 
-  ![URL传递参数](./imgs/requests/2.JPG)
+  ![URL传递参数](./imgs/requests/url_params.JPG)
 
 ## 三、响应内容
 
@@ -41,19 +41,19 @@
 
 你可以使用`r.encoding`来查看`requests`的编码；也可以通过赋值`r.encoding='UTF-8'`来显式的指定编码。如果你改变了编码，则每当你访问`r.text`时，`requests`会使用`r.encoding`的最新值。
 
-  ![文本响应内容](./imgs/requests/3.JPG)
+  ![文本响应内容](./imgs/requests/response_text.JPG)
 
 ### 2. 二进制响应内容
 
 你也可以通过`r.content`用字节的方式访问响应内容。`requests`会自动为你解码`gzip`和`deflate`传输编码的响应数据。
 
-  ![二进制响应内容](./imgs/requests/4.JPG)
+  ![二进制响应内容](./imgs/requests/response_binary.JPG)
 
 ### 3. JSON响应内容
 
 `requests`内置了一个JSON解码器，`r.json()`通过它将数据解析成JSON格式。如果解析失败则抛出`ValueError`异常。
 
-  ![JSON响应内容](./imgs/requests/5.JPG)
+  ![JSON响应内容](./imgs/requests/response_json.JPG)
 
 ### 4. 原始响应内容
 
@@ -61,7 +61,7 @@
 
 为了处理原始数据，你需要使用`Response.iter_content()`方法。当使用流下载时，优先使用该方法。
 
-  ![原始响应内容](./imgs/requests/6.JPG)
+  ![原始响应内容](./imgs/requests/response_raw.JPG)
 
 ## 三、请求与响应对象
 任何时候通过`requests`发送请求，它都在做两件事情：
@@ -70,7 +70,7 @@
 - 一旦`requests`得到一个从服务器返回的响应就会产生一个`Response`对象。该对象包含服务器返回的所有信息，也包含你原来创建的`Request`对象。如：`r.headers`包含了服务器返回的响应头部信息，`r.request.headers`包含了发送请求的请求头部信息。
 >`r.request`包含了发送的请求。
 
-  ![请求与响应对象](./imgs/requests/16.JPG)
+  ![请求与响应对象](./imgs/requests/Request_and_Response.JPG)
 
 ## 四、响应体内容工作流
 
@@ -81,7 +81,7 @@
 
 注意：当你对一个请求设置了`stream=True`参数之后，`Request`会保持连接一直到你读取了所有的响应内容（包括响应体）或者你手动调用`Response.close`之后才会关闭连接并释放连接。如果你只是读取了部分响应内容，则你需要手动调用`Response.close`来关闭连接。
 
-  ![响应体内容工作流](./imgs/requests/18.JPG)
+  ![响应体内容工作流](./imgs/requests/stream_response.JPG)
 
 ### 1. 流式迭代
 通常在设置`stream=True`之后，使用`requests.Response.iter_lines()`来进行流式迭代。如：
@@ -122,7 +122,7 @@ resp = s.send(prepped,
 )
 ```
 
-  ![定制请求头与请求体](./imgs/requests/17.JPG)
+  ![定制请求头与请求体](./imgs/requests/custom_request.JPG)
 
 在创建`Request`对象之后，通过`Session`实例发送或者通过`requests.*`发送`PreparedRequest`实例。其中`PreparedRequest`实例是由`Request`实例的`.prepare()`方法返回。
 
@@ -145,11 +145,11 @@ prepped = s.prepare_request(req) #利用了Session的共享机制
 
 如果你需要实现POST表单数据的效果，你可以通过`data`关键字参数传入一个字典即可。你的数据字典在发出请求的时候会自动编码为表单形式。如`r=requests.post('http://example.com/',data={'key1':value1,'key2':value2})`。
 
-  ![POST数据](./imgs/requests/7.JPG)
+  ![POST数据](./imgs/requests/post_form_data.JPG)
 
 如果你要POST的数据并非编码为表单形式的，如`string`而不是`dict`，那么数据会被直接发布出去。
 
-  ![POST字符串](./imgs/requests/8.JPG)
+  ![POST字符串](./imgs/requests/post_no_form_data.JPG)
 
 ### 2. POST 一个多部分编码的文件
 
@@ -165,7 +165,7 @@ prepped = s.prepare_request(req) #利用了Session的共享机制
 你也可以将字符串作为当作文件来上传一个文件。此时在服务器端会生成一个文件，该文件的内容就是你发送的字符串。如：
 `r=requests.post('http://example.com/',files={'file':('report.txt', 'data to send\n data to send\n')})`
 
-  ![上传文件](./imgs/requests/9.JPG)
+  ![上传文件](./imgs/requests/post_files.JPG)
 
 #### b. 块编码请求
 对于出去和进来的请求，`requests`也支持分块传输编码。要发送一个块编码请求，只需要为你的请求体提供一个生成器（或者一个没有具体长度的迭代器，有具体长度的则不行）。如
@@ -194,21 +194,21 @@ r = requests.post(url, files=multiple_files)
 - `requests`附带了一个内置的状态码查询对象：`r.status_code==requests.codes.ok`。
 - 如果发送了一个失败请求（非200请求），我们可以通过`r.raise_for_status()`来抛出异常。但是如果发送的请求成功（200请求），则`r.raise_for_status()`不做任何事情。
 
-  ![响应状态码](./imgs/requests/10.JPG)
+  ![响应状态码](./imgs/requests/response_code.JPG)
 
-  ![200响应和非200响应](./imgs/requests/11.JPG)
+  ![200响应和非200响应](./imgs/requests/response_code_200_and_others.JPG)
 
 ## 九、响应头
 
 通过 `r.headers`查看一个Python字典形式展示的服务器响应头。但是这个字典比较特殊：它是仅仅为了HTTP头部而生成的，由于HTTP头部是大小写不敏感的，因此我们可以以任意大写形式来访问这些响应头字段。
 
- ![响应头](./imgs/requests/12.JPG)
+ ![响应头](./imgs/requests/response_header.JPG)
 
 ## 十、Cookie
 
 在响应中如果包含一些`Cookie`，你可以通过`r.cookies['key']`来访问它。如果你想发送`Cookie`数据到服务器，可以使用`cookies`关键字参数传入作为`Cookie`的字典。
 
-  ![Cookie](./imgs/requests/13.JPG)
+  ![Cookie](./imgs/requests/cookie.JPG)
 
 ## 十一、Session
 `Sessio`n对象能够让你跨请求保持某些参数。同一个`Session`实例发出的所有请求直接也会保持`Cookie`。`Session`对象具有主要的`requests API`的所有方法。
@@ -218,7 +218,7 @@ r = requests.post(url, files=multiple_files)
 - 任何传递给请求方法的字典都会与已经设置的`Session`数据合并。方法层的参数会覆盖Session的参数。因此如果想删除`Session`中的某些数据，可以在方法层中，通过关键字参数将它设为`None`即可
 	>这里的`Session`与服务器编程中的`session`不同。服务器编程的`session`值得是在服务器端保持的会话。而这里的`Session`是在用户端保持的。
 
-  ![Session](./imgs/requests/15.JPG)
+  ![Session](./imgs/requests/session.JPG)
 
 ## 十二、重定向
 默认情况下，除了`HEAD`请求之外，`requests`会自动处理所有的请求的重定向。
@@ -227,7 +227,7 @@ r = requests.post(url, files=multiple_files)
 - 如果你使用的是`GET`、`OPTIONS`、`POST`、`PUT`、`PATCH`、或者`DELETE`请求，则可以通过`allow_redirects=False`参数禁用重定向处理。
 - 如果你使用的是`HEAD`，你也可以通过`allow_redirects=True`来启用重定向处理。
 
-  ![重定向](./imgs/requests/14.JPG)
+  ![重定向](./imgs/requests/redirect.JPG)
 
 ## 十三、超时
 你可以指定`requests`在经历过某个时长之后，如果服务器未能响应则抛出异常。方法为：在请求中添加`timeout`关键字参数，其值为浮点数表示的秒数。如`r=requests.get('http://example.com', timeout=0.001)`。
