@@ -1,8 +1,3 @@
-<!--
-    作者：华校专
-    email: huaxz1986@163.com
-**  本文档可用于个人学习目的，不得用于商业目的  **
--->
 # Beautiful Soup 笔记（基于`BeautifulSoup 4.4.1`）
 `BeautifulSoup`是从HTML或者XML中提取数据的Python库。目前`Beautiful Soup 3`已经停止开发,推荐在现在的项目中使用`Beautiful Soup 4`, 安装的命令为`pip install beautifulsoup4`。
 > 如果执行命令`pip install beautifulsoup`则安装的是`Beautiful Soup 3`

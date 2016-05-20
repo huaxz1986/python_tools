@@ -1,8 +1,3 @@
-<!--
-    作者：华校专
-    email: huaxz1986@163.com
-**  本文档可用于个人学习目的，不得用于商业目的  **
--->
 # VirtualEnv笔记（基于 virtualenv 15.0.1 ）
 VirtualEnv用于创建独立的Python虚拟环境，这些独立的Python虚拟环境中有独立的安装目录。
 

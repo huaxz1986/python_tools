@@ -1,8 +1,3 @@
-<!--
-    作者：华校专
-    email: huaxz1986@163.com
-**  本文档可用于个人学习目的，不得用于商业目的  **
--->
 # Numpy学习笔记 （基于Numpy 1.11.0）
 
 - `ndarray`：`NumPy`最重要的对象就是`ndarray`（也可以称它为`array`），它是一个多维的容器。其存放元素通常是相同的类型和大小的。
@@ -193,8 +188,10 @@
 -  `numpy.vstack(seq)`：垂直拼接（即其他维度不变，维度0拼接），返回新创建的拼接后的`ndarray`。`seq`是一个序列，每个元素为一个`array-like`对象或者`ndarray`，且要求每个元素满足形状条件：除了维度0长度，其他维度长度必须相同。
 - `numpy.column_stack(seq)`：将一维数组按列拼接成二维数组，返回新创建的拼接后的`ndarray`。`seq`是一个序列，每个元素为一个`array-like`对象或者`ndarray`，且要求是一维的。拼接规则为：第一维长度为原数组长度，第二维长度为2，结果数组第二维每个元素为原来的数组序列中各取一个值的组成的数组。
 - `numpy.concatenate((a1, a2, ...), axis=0)`：将一系列数组按照指定轴线拼接，返回新创建的拼接后的`ndarray`。`a1、a2、....`都是`array_like`对象，且要求每个元素满足形状条件：除了维度`axis`长度，其他维度长度必须相同。`axis`为拼接轴，默认为0（以哪个轴为拼接轴，就变化该轴的长度）
+- `numpy.c_[a1,a2,...]`：沿着第二个轴拼接
 
   ![ndarray拼接](./imgs/numpy/concatenate.JPG)
+  ![c_function](./imgs/numpy/c_function.JPG)
 
 ### 9.  ndarray 的拆分
 
@@ -775,3 +772,31 @@ $$ P(x;l,m,r)= \left\\{
 	- `NaN`：替换为0
 	- 正无穷：替换为一个非常大的数字
 	- 负无穷：替换为一个非常小的数字
+
+### 4. meshgrid
+
+`numpy.meshgrid(x,y)`:返回两个向量的网格。
+
+- `x`和`y`均为一维的数组，代表网格的`x`轴和 `y`轴坐标
+- 返回一个元组 `(X,Y)`，其中`X`是个数组，它是由`x`沿着第一维扩展成`(y.size,x.size)`大小的数组；`Y `也是个数字。它是`y `先转置，再沿着 第二维扩展成`(y.size,x.size)`大小的数组
+
+  ![meshgrid](./imgs/numpy/meshgrid.JPG)
+
+### 5. 升维
+
+在对数组切片时，可以插入 `None`或者`numpy.newaxis`来对切片之后的结果升维。它们被插入的位置就是被增加的维度：
+
+  ![insert_axis](./imgs/numpy/insert_axis.JPG)
+ 
+### 6. 行向量、列向量
+
+行向量的形状为`(1,n)`，列向量的形状为`(n,1)`。行向量与列向量可以通过转置操作完成相互转换。
+> 注意：不是 `(n,)`
+
+- 生成行向量的方法：
+	- `np.c_[n_1,n_2]`：其中 `n1`，`n2`等等均为数字
+
+- 生成列向量的方法：
+	- `np.c_[n_1,n_2].T`：其中 `n1`，`n2`等等均为数字
+
+  ![row_column_vector](./imgs/numpy/row_column_vector.JPG)

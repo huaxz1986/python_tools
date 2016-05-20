@@ -1062,6 +1062,7 @@ ax.transData, ax.transAxes)`能够返回一个混合坐标系，该坐标系中�
 
   ![级坐标](./imgs/matplotlib/polar_coordinate.JPG)
 
+
 ## 八、技巧
 
 ### 1. 共享坐标轴
@@ -1206,3 +1207,67 @@ ax.grid()  #开启网格
 
 - `Axis.set_ticks_position`：设置 `tick` 位置，可以为：` 'top' | 'bottom' | 'both' | 'default' | 'none'`，如果为 `'None'`则不显示 `tick`
 - `Axis.set_label_position`：设置`label`位置，可以为：` 'top'| 'bottom'`
+
+
+### 10、matplotlib.colors
+
+`matplotlib.colors`是一个模块，用于转换数字或者颜色参数到 `RGB` 或者`RGBA`
+
+- `RGB`：一个浮点数序列，有3个浮点数。每个数都是 0-1之间
+- `RGBA`：一个浮点数序列，有4个浮点数。每个数都是 0-1之间
+
+它里面有个常用的功能就是生成一个 `colormap`，它用于将一个数字序列转换成一个颜色序列。通常有下列两个步骤：
+
+- 将数字归一化到0-1之间（通过` Normalize` 类对象或者其子类对象）
+- 将0-1之间的数字映射到一个颜色 （通过 `Colormap` 类对象或者其子类对象）
+
+`matplotlib.colors.ColorConverter` 提供了一个单例对象用于转换数字或者数字序列到 `color`。
+
+####a. ListedColormap
+`matplotlib.colors.ListedColormap(colors, name=’from_list’, N=None)`基类是`matplotlib.colors.Colormap`。它用于从一个`list of colors`中创建`colormap`
+
+### 11. 绘制color map
+
+- `matplotlib.pyplot.pcolor(*args, **kwargs)`：用于绘制颜色图，返回一个`matplotlib.collections.Collection `对象。常用的调用方法为：
+
+	```
+	pcolor(C)
+	pcolor(C,**kwargs)
+	```
+
+- `matplotlib.pyplot.pcolormesh(*args, **kwargs)`：用于绘制一个四边形网格。它类似于 `pcolor()`，但是机制不同，且返回的是`QuadMesh`对象。它绘图更快。常用的调用方法为：
+
+	```
+	pcolormesh(C)
+	pcolormesh(X,Y,C)
+	pcolormesh(C,**kwargs)
+	```
+
+其中参数为：
+
+- `C`：为一个 `masked array`。它会被转换成一个 `ColorMap`，然后对相应的网格图上颜色
+- `X`和`Y`是网格参数，通常他们是从 `numpy.meshgrid(x_array,y_array))`获取。其中 `x_array`是一维数组，代表划分X轴网格的横坐标； `y_array`是一维数组，代表划分Y轴网格的纵坐标
+	> X,Y,C 形状相同。其中X和Y对应于网格的划分，C对应于颜色的分配（相同C[i][j]值的网格，颜色相同）
+
+  ![pcolormesh_pcolor](imgs/matplotlib/pcolormesh_pcolor.JPG)
+  
+  ![pcolormesh_pcolor](imgs/matplotlib/pcolormesh_pcolor_2.JPG)
+
+### 12. 清除绘图
+
+你可以通过 `pyplot`来清除绘图：
+
+- `pyplot.cla()`：清除`current axis`。非当前`axis`不受影响
+- `pyplot.clf()`：清除`current figure`。但是它不关闭`window`
+- `pyplot.close()`：关闭`window`
+
+你也可以通过面向对象的方法：
+
+- `Figure.clf()`：清除该`Figure`对象的所有内容。
+
+### 13. 清除X坐标和Y坐标：
+
+```
+Axes.set_xticks(())
+Axes.set_yticks(())
+```
